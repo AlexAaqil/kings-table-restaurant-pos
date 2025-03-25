@@ -362,7 +362,8 @@ aside .footer .logout button i {
 }
 
 footer {
-  background: #d9d9d9;
+  background: #000;
+  color: #fff;
 }
 
 footer .container {
@@ -387,6 +388,10 @@ footer .container .links {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 0.5em;
+}
+
+footer .container .links a {
+  color: #fff;
 }
 
 footer .container .contacts .socials {

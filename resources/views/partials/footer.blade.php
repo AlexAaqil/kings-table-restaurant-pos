@@ -2,7 +2,7 @@
     <div class="container">
         <section class="branding">
             <p class="title">{{ $appSettings['school_name'] ?? config('globals.app_name') }}</p>
-            <p>Better start for new projects.</p>
+            <p>POS made easy.</p>
             <p>{{ $appSettings['app_address'] ?? config('globals.app_address') }}</p>
         </section>
 

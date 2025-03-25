@@ -8,8 +8,9 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Products\ProductCategoryController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Sales\SaleController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-Route::view('/', 'index')->name('home-page');
+Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::view('/contact', 'contact')->name('contact-page');
 Route::post('/contact', [MessageController::class, 'store'])->name('messages.store');
 

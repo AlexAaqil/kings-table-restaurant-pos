@@ -29,11 +29,6 @@
                 </p>
     
                 <button type="submit">Login</button>
-    
-                <p>
-                    Don't have an account?
-                    <a href="{{ route('register') }}">Sign up</a>
-                </p>
             </form>
         </div>
     </section>

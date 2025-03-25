@@ -18,6 +18,10 @@
                         </div>
     
                         <x-search-input />
+
+                        <div class="btn">
+                            <a href="{{ route('users.create') }}">New User</a>
+                        </div>
                     </div>
     
                     <table>

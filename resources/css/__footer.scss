@@ -1,5 +1,6 @@
 footer {
-    background: darken($background_color, 15%);
+    background: #000;
+    color: #fff;
     
     .container {
         padding: 2.8em 5%;
@@ -19,6 +20,10 @@ footer {
             display: flex;
             flex-direction: column;
             gap: 0.5em;
+
+            a {
+                color: #fff;
+            }
         }
 
         .contacts {
