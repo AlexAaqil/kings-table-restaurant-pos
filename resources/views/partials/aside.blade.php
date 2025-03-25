@@ -32,12 +32,12 @@
                 'text' => 'Users',
                 'level' => ['super admin', 'admin'],
             ],
-            [
-                'route' => 'messages.index',
-                'icon' => 'fas fa-comment',
-                'text' => 'Messages',
-                'level' => ['super admin', 'admin'],
-            ],
+            // [
+            //     'route' => 'messages.index',
+            //     'icon' => 'fas fa-comment',
+            //     'text' => 'Messages',
+            //     'level' => ['super admin', 'admin'],
+            // ],
         ]);
 
         $nav_links = $nav_content->filter(function($link) use($user_level_label) {

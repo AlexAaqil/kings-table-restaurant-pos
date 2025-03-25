@@ -14,8 +14,8 @@ class UsersSeeder extends Seeder
     public function run(): void
     {
         // Create 5 real users with specific details
-        $admin_password = '@dmin';
-        $user_password = 'password';
+        $admin_password = env('DEFAULT_ADMIN_PASSWORD');
+        $user_password = env('DEFAULT_USER_PASSWORD');
 
         $realUsers = [
             [
@@ -37,22 +37,9 @@ class UsersSeeder extends Seeder
             [
                 'first_name' => 'Jane',
                 'last_name' => 'Smith',
-                'email' => 'jane@gmail.com',
+                'email' => 'cashier@gmail.com',
                 'password' => $user_password,
-                'email_verified_at' => now(),
-            ],
-            [
-                'first_name' => 'John',
-                'last_name' => 'Doe',
-                'email' => 'john@gmail.com',
-                'password' => $user_password,
-                'email_verified_at' => now(),
-            ],
-            [
-                'first_name' => 'User',
-                'last_name' => 'Johnson',
-                'email' => 'user@gmail.com',
-                'password' => $user_password,
+                'user_level' => 2,
                 'email_verified_at' => now(),
             ],
         ];
