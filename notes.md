@@ -68,7 +68,7 @@ sales {
     $table->timestamps();
 }
 
-order_items {
+sales_items {
     $table->id();
     $table->foreignId('order_id')->constrained('sales')->onDelete('cascade');
     $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('set null');
