@@ -1,0 +1,78 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-4JXQ3ONV.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/icons/icons.css": {
+    "file": "assets/icons-sZ5R3pgv.css",
+    "src": "resources/css/icons/icons.css",
+    "isEntry": true
+  },
+  "resources/css/icons/webfonts/fa-brands-400.eot": {
+    "file": "assets/fa-brands-400-DnkPfk3o.eot",
+    "src": "resources/css/icons/webfonts/fa-brands-400.eot"
+  },
+  "resources/css/icons/webfonts/fa-brands-400.svg": {
+    "file": "assets/fa-brands-400-cH1MgKbP.svg",
+    "src": "resources/css/icons/webfonts/fa-brands-400.svg"
+  },
+  "resources/css/icons/webfonts/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400-CSYNqBb_.ttf",
+    "src": "resources/css/icons/webfonts/fa-brands-400.ttf"
+  },
+  "resources/css/icons/webfonts/fa-brands-400.woff": {
+    "file": "assets/fa-brands-400-CEJbCg16.woff",
+    "src": "resources/css/icons/webfonts/fa-brands-400.woff"
+  },
+  "resources/css/icons/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-UxlILjvJ.woff2",
+    "src": "resources/css/icons/webfonts/fa-brands-400.woff2"
+  },
+  "resources/css/icons/webfonts/fa-regular-400.eot": {
+    "file": "assets/fa-regular-400-BhTwtT8w.eot",
+    "src": "resources/css/icons/webfonts/fa-regular-400.eot"
+  },
+  "resources/css/icons/webfonts/fa-regular-400.svg": {
+    "file": "assets/fa-regular-400-gwj8Pxq-.svg",
+    "src": "resources/css/icons/webfonts/fa-regular-400.svg"
+  },
+  "resources/css/icons/webfonts/fa-regular-400.ttf": {
+    "file": "assets/fa-regular-400-D1vz6WBx.ttf",
+    "src": "resources/css/icons/webfonts/fa-regular-400.ttf"
+  },
+  "resources/css/icons/webfonts/fa-regular-400.woff": {
+    "file": "assets/fa-regular-400-DFnMcJPd.woff",
+    "src": "resources/css/icons/webfonts/fa-regular-400.woff"
+  },
+  "resources/css/icons/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-DGzu1beS.woff2",
+    "src": "resources/css/icons/webfonts/fa-regular-400.woff2"
+  },
+  "resources/css/icons/webfonts/fa-solid-900.eot": {
+    "file": "assets/fa-solid-900-B6Axprfb.eot",
+    "src": "resources/css/icons/webfonts/fa-solid-900.eot"
+  },
+  "resources/css/icons/webfonts/fa-solid-900.svg": {
+    "file": "assets/fa-solid-900-B4ZZ7kfP.svg",
+    "src": "resources/css/icons/webfonts/fa-solid-900.svg"
+  },
+  "resources/css/icons/webfonts/fa-solid-900.ttf": {
+    "file": "assets/fa-solid-900-mxuxnBEa.ttf",
+    "src": "resources/css/icons/webfonts/fa-solid-900.ttf"
+  },
+  "resources/css/icons/webfonts/fa-solid-900.woff": {
+    "file": "assets/fa-solid-900-DOXgCApm.woff",
+    "src": "resources/css/icons/webfonts/fa-solid-900.woff"
+  },
+  "resources/css/icons/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-BUswJgRo.woff2",
+    "src": "resources/css/icons/webfonts/fa-solid-900.woff2"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CvSG40sc.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
