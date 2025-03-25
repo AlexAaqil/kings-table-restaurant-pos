@@ -4,13 +4,192 @@
         padding: 4px 16px;
         min-height: 100dvh;
         height: auto;
+
+        .system_nav {
+            display: flex;
+            gap: 1em;
+            margin: 0.2em 0 0.4em;
+            
+            a {
+                font-weight: bold;
+            }
+
+            a:not(:last-child),
+            span:not(:last-child) {
+                font-weight: bold;
+
+                &::after {
+                    content: " / ";
+                    color: $text_color;
+                    margin: 0 0 0 0.6em;
+                }
+            }
+        }
+
+        .row_container {
+            display: grid;
+            gap: 2em;
+        }
     }
 }
 
-@media screen and (width >= 726px) {
+.Products {
+    .product_images {
+        display: flex;
+        gap: 1.5em;
+        margin: 0 0 0.8em;
+
+        .product_image {
+            position: relative;
+            border: 1px solid $faded_line;
+            border-radius: 8px;
+            width: 150px;
+            height: 150px;
+
+            img {
+                object-fit: contain;
+            }
+
+            a {
+                position: absolute;
+                top: -15px;
+                right: -5px;
+                font-size: 1.2em;
+                color: $danger;
+            }
+        }
+    }
+}
+
+.POSShop {
+    // *{border: 1px solid grey}
+
+    .product_list {
+        display: grid;
+        gap: 1.5em;
+
+        .product {
+            display: grid;
+            gap: 0.8em;
+            grid-template-columns: 1fr 2fr;
+            background: $faded_background;
+            padding: 8px 16px;
+            border-radius: 16px;
+
+            .image {
+                width: 100px;
+                height: 100px;
+            }
+
+            .details {
+                display: grid;
+                gap: 0.2em;
+
+                p {
+                    &:not(:first-of-type) {
+                        font-size: 0.96rem;
+                    }
+                }
+
+                .category {
+                    font-size: 0.88em;
+                    color: hsl(0, 0%, 0%);
+                }
+            }
+        }
+    }
+
+    .cart_items {
+        .cart_header {
+            display: flex;
+            gap: 0.5em;
+            background: $elements_background;
+            color: $elements_color;
+            padding: 8px 24px;
+            border-radius: 8px 8px 0 0;
+            margin: 0 0 0.5em;
+
+            p {
+                font-weight: bold;
+                text-align: center;
+            }
+        }
+
+        .cart_item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1em;
+            margin: 0 0 1em;
+            border-bottom: 1px solid $faded_line;
+            padding: 4px 2px;
+
+            .quantity_wrapper {
+                display: grid;
+                gap: 0.4em;
+                grid-template-columns: 1fr 1fr 1fr;
+                align-items: center;
+
+                .quantity {
+                    text-align: center;
+                }
+            }
+
+            button {
+                padding: 2px;
+            }
+
+            .remove {
+                color: $danger;
+                background: $danger;
+                color: #fff;
+                padding: 4px;
+                
+                i {
+                    font-size: 1.2em;
+                }
+            }
+        }
+
+        .cart_footer {
+            padding: 8px 16px;
+
+            .inputs {
+                margin: 2em 0 1em;
+                display: grid;
+                gap: 0.8em;
+
+                .input {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+
+                    input,
+                    select {
+                        padding: 8px;
+                        border-radius: 8px;
+                        border: 1px solid $faded_line;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1024px) {
     .MainApp {
         aside {
             width: $aside_width;
+        }
+
+        .app_content {
+            .row_container {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+    }
+
+    .POSShop {
+        .product_list {
+            grid-template-columns: 1fr 1fr 1fr;
         }
     }
 }

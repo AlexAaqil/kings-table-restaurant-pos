@@ -1,0 +1,91 @@
+.cards {
+    display: grid;
+    gap: 2em 1.5em;
+
+    .card {
+        box-shadow: 4px 6px 8px #808080;
+        border-radius: 8px;
+        padding: 8px 0;
+
+        a {
+            color: $text_color;
+        }
+
+        .image {
+            height: 300px;
+            padding: 4px;
+
+            a {
+                img {
+                    border-radius: 8px;
+                }
+            }
+        }
+
+        .text {
+            padding: 10px 16px 15px;
+
+            .extra_details {
+                margin: 0.8em 0;
+                display: flex;
+                gap: 1.5em;
+
+                span,
+                a {
+                    font-size: 0.88em;
+                    color: $themed_background;
+                }
+            }
+
+            .details {
+                .title {
+                    font-size: 1.28em;
+                    margin: 0 0 0.4em;
+                }
+
+                .prices {
+                    display: flex;
+                    gap: 0.8em;
+                    align-items: flex-end;
+
+                    .price {
+                        font-size: 1.48em;
+                        font-weight: bold;
+                        color: $success;
+                    }
+                }
+
+            }
+            
+            .row {
+                display: grid;
+                grid-template-columns: 1fr 100px;
+                gap: 1.2em;
+
+                .cart {
+                    justify-self: center;
+                    align-self: center;
+    
+                    form {
+                        text-align: center;
+    
+                        button {
+                            background: unset;
+    
+                            span {
+                                font-size: 2.8em;
+                                color: $themed_background;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

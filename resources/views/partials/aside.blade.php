@@ -32,6 +32,18 @@
                 'text' => 'Users',
                 'level' => ['super admin', 'admin'],
             ],
+            [
+                'route' => 'products.index',
+                'icon' => 'fas fa-barcode',
+                'text' => 'Products',
+                'level' => ['super admin', 'admin'],
+            ],
+            [
+                'route' => 'shop',
+                'icon' => 'fas fa-barcode',
+                'text' => 'Shop',
+                'level' => ['cashier'],
+            ],
             // [
             //     'route' => 'messages.index',
             //     'icon' => 'fas fa-comment',

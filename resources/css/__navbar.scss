@@ -64,7 +64,7 @@ nav {
     }
 }
 
-@media screen and (width <= 726px) {
+@media screen and (max-width: 726px) {
     nav {
         grid-template-columns: 1fr auto auto auto;
         gap: 0.5em;

@@ -10,8 +10,8 @@
         padding: 8px 0;
 
         .stat {
+            background: $dashboard_background;
             display: grid;
-            background: $faded_background;
             padding: 8px 12px;
             border-radius: 8px;
             
@@ -44,7 +44,7 @@
     }
 }
 
-@media screen and (width >= 726px) {
+@media screen and (min-width: 1024px) {
     .Dashboard {
         .stats {
             grid-template-columns: repeat(5, 1fr);

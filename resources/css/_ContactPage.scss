@@ -63,7 +63,7 @@
     }
 }
 
-@media screen and (width >= 726px) {
+@media screen and (min-width: 1024px) {
     .ContactPage {
         .container {
             grid-template-columns: 1fr 1fr;

@@ -27,7 +27,6 @@ product_categories {
     $table->id();
     $table->string('title')->unique();
     $table->string('slug')->index();
-    $table->timestamps();
 }
 
 products {

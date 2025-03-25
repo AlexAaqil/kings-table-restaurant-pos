@@ -40,7 +40,7 @@ footer {
     }
 }
 
-@media screen and (width >= 726px) {
+@media screen and (min-width: 1024px) {
     footer {
         .container {
             display: grid;
