@@ -21,7 +21,9 @@ Route::middleware(['auth', 'verified', 'active'])->group(function() {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('shop', [ProductController::class, 'shop'])->name('shop');
-    Route::resource('sales', SaleController::class)->except('show');
+    Route::post('/sales/store', [SaleController::class, 'store'])->name('sales.store');
+    Route::get('/sales/cashier', [Salecontroller::class, 'cashierSales'])->name('cashier.sales');
+    Route::get('/receipt/{sale}', [SaleController::class, 'receipt'])->name('sales.receipt');
 
     Route::middleware(['admin'])->group(function() {
         Route::resource('users', UserController::class)->except('show');
@@ -33,6 +35,7 @@ Route::middleware(['auth', 'verified', 'active'])->group(function() {
         Route::get('/products/images/delete/{id}', [ProductController::class, 'deleteProductImage'])->name('products.delete_image');
         Route::post('/products/images/sort', [ProductController::class, 'sortProductImages'])->name('products.sort_images');
 
+        Route::resource('sales', SaleController::class)->except('create', 'store', 'show');
     });
 });
 

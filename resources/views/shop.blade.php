@@ -1,10 +1,11 @@
 <x-authenticated-layout>
     <x-slot name="head">
-        <title>Shop</title>
+        <title>POS System</title>
     </x-slot>
 
     <section class="POSShop">
         <div class="row_container">
+            <!-- Products Section -->
             <div class="column">
                 @if ($products->isNotEmpty())
                     <div class="table list_items">
@@ -15,16 +16,18 @@
                                     <span>{{ $count_products }} {{ Str::plural('Product', $count_products) }}</span>
                                 </p>
                             </div>
-
                             <x-search-input />
                         </div>
 
                         <div class="product_list">
                             @foreach($products as $product)
-                                <div class="product searchable" data-id="{{ $product->id }}" data-name="{{ $product->name }}" 
-                                    data-price="{{ $product->getEffectivePrice() }}">
+                                <div class="product searchable" 
+                                     data-id="{{ $product->id }}" 
+                                     data-name="{{ $product->name }}" 
+                                     data-price="{{ $product->getEffectivePrice() }}">
                                     <div class="image">
-                                        <img src="{{ $product->getFirstImage() ?? asset('assets/images/default_image.jpg') }}" alt="Product Image" width="100" height="100">
+                                        <img src="{{ $product->getFirstImage() ?? asset('assets/images/default_image.jpg') }}" 
+                                             alt="Product Image" width="100" height="100">
                                     </div>
 
                                     <div class="details">
@@ -40,10 +43,11 @@
                         </div>
                     </div>
                 @else
-                    <p>No product categories yet.</p>
+                    <p>No products available.</p>
                 @endif
             </div>
 
+            <!-- Cart Section -->
             <div class="cart_items">
                 <div class="cart">
                     <div class="cart_header">
@@ -51,11 +55,12 @@
                     </div>
 
                     <div class="cart_content">
-                        <!-- Cart items will be added dynamically here -->
+                        <!-- Cart items will be dynamically added here -->
                     </div>
 
                     <div class="cart_footer">
                         <p><b>Total: Ksh. <span id="cartTotal">0.00</span></b></p>
+
                         <div class="inputs">
                             <div class="input">
                                 <label>Amount Paid:</label>
@@ -70,6 +75,11 @@
                                     <option value="card">Card</option>
                                 </select>
                             </div>
+
+                            <div class="input">
+                                <label>Change Given:</label>
+                                <input type="text" id="changeGiven" readonly>
+                            </div>
                         </div>
 
                         <button id="checkoutButton">Checkout</button>
@@ -77,6 +87,19 @@
                 </div>
             </div>
         </div>
+
+        <!-- Printable Receipt Section -->
+        {{-- <div class="receipt hidden">
+            <h2>Receipt</h2>
+            <div class="receipt_content">
+                <p><b>Date:</b> <span id="receiptDate"></span></p>
+                <p><b>Payment Method:</b> <span id="receiptPaymentMethod"></span></p>
+                <p><b>Total:</b> Ksh. <span id="receiptTotal"></span></p>
+                <p><b>Amount Paid:</b> Ksh. <span id="receiptPaid"></span></p>
+                <p><b>Change Given:</b> Ksh. <span id="receiptChange"></span></p>
+            </div>
+            <button id="printReceipt">Print Receipt</button>
+        </div> --}}
     </section>
 
     <x-slot name="scripts">
@@ -111,6 +134,7 @@
                     document.getElementById("cartTotal").innerText = total.toFixed(2);
                 }
 
+                // Add products to cart
                 document.querySelectorAll(".product").forEach(product => {
                     product.addEventListener("click", function () {
                         let id = this.dataset.id;
@@ -127,6 +151,7 @@
                     });
                 });
 
+                // Update quantity or remove items
                 document.querySelector(".cart_content").addEventListener("click", function (event) {
                     let itemElement = event.target.closest(".cart_item");
                     if (!itemElement) return;
@@ -148,6 +173,7 @@
                     updateCartUI();
                 });
 
+                // Handle checkout
                 document.getElementById("checkoutButton").addEventListener("click", function () {
                     let amountPaid = parseFloat(document.getElementById("amountPaid").value);
                     let paymentMethod = document.getElementById("paymentMethod").value;
@@ -171,9 +197,9 @@
 
                     let saleData = {
                         items: Object.values(cart),
-                        total,
-                        amountPaid,
-                        paymentMethod
+                        total_amount: total,
+                        amount_paid: amountPaid,
+                        payment_method: paymentMethod
                     };
 
                     fetch("{{ route('sales.store') }}", {
@@ -186,9 +212,12 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        alert("Sale completed successfully!");
+                        alert("Sale completed successfully! Change Given: Ksh. " + data.change);
                         cart = {};
                         updateCartUI();
+
+                        // Redirect to receipt page
+                        window.location.href = `/receipt/${data.sale_id}`;
                     })
                     .catch(error => {
                         console.error("Error:", error);

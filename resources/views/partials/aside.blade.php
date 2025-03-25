@@ -44,6 +44,18 @@
                 'text' => 'Shop',
                 'level' => ['cashier'],
             ],
+            [
+                'route' => 'cashier.sales',
+                'icon' => 'fas fa-barcode',
+                'text' => 'Sales',
+                'level' => ['cashier'],
+            ],
+            [
+                'route' => 'sales.index',
+                'icon' => 'fas fa-barcode',
+                'text' => 'Sales',
+                'level' => ['super admin', 'admin'],
+            ],
             // [
             //     'route' => 'messages.index',
             //     'icon' => 'fas fa-comment',

@@ -1199,13 +1199,14 @@ button {
   gap: 0.2em;
 }
 
-.POSShop .product_list .product .details p:not(:first-of-type) {
+.POSShop .product_list .product .details .code,
+.POSShop .product_list .product .details .price {
   font-size: 0.96rem;
 }
 
 .POSShop .product_list .product .details .category {
-  font-size: 0.88em;
-  color: black;
+  font-size: 0.76em;
+  color: #363636;
 }
 
 .POSShop .cart_items .cart_header {
