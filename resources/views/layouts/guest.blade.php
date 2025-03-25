@@ -15,6 +15,6 @@
 
     <x-slot name="scripts">
         {{ $scripts ?? '' }}
-        <script src="{{ Vite::asset('resources/js/burger.js') }}"></script>
+        <script src="{{ asset('assets/js/burger.js') }}"></script>
     </x-slot>
 </x-app-layout>

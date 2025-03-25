@@ -1,2 +1,2 @@
-<script src="{{ Vite::asset('resources/js/sweetalert.js') }}"></script>
-<script src="{{ Vite::asset('resources/js/sweetalert-dialog.js') }}"></script>
+<script src="{{ asset('assets/js/sweetalert.js') }}"></script>
+<script src="{{ asset('assets/js/sweetalert-dialog.js') }}"></script>

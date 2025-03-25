@@ -29,11 +29,11 @@
 
             <div class="socials">
                 <a href="https://wa.me/{{ $appSettings['whatsapp_number'] ?? config('globals.app_whatsapp_number') }}">
-                    <img src="{{ Vite::asset('resources/images/whatsapp.png') }}" alt="{{ config('globals.app_name') }} Whatsapp" width="30px" height="30px">
+                    <img src="{{ asset('assets/images/whatsapp.png') }}" alt="{{ config('globals.app_name') }} Whatsapp" width="30px" height="30px">
                 </a>
 
                 <a href="#">
-                    <img src="{{ Vite::asset('resources/images/instagram.png') }}" alt="{{ config('globals.app_name') }} Instagram" width="30px" height="30px">
+                    <img src="{{ asset('assets/images/instagram.png') }}" alt="{{ config('globals.app_name') }} Instagram" width="30px" height="30px">
                 </a>
             </div>
         </section>

@@ -23,7 +23,7 @@
                         @if($user->image)
                             <img id="previewImage" src="{{ asset('storage/' . $user->image) }}" alt="User" width="100" height="100">
                         @else
-                            <img id="previewImage" src="{{ Vite::asset('resources/images/default_profile.jpg') }}" alt="Default Profile Image" width="100" height="100">
+                            <img id="previewImage" src="{{ asset('assets/images/default_profile.jpg') }}" alt="Default Profile Image" width="100" height="100">
                         @endif
                     </div>
                 
