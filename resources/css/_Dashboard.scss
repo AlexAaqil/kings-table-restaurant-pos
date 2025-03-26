@@ -5,49 +5,91 @@
 
     .stats {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 1em;
         padding: 8px 0;
 
         .stat {
             background: $dashboard_background;
-            display: grid;
-            padding: 8px 12px;
+            padding: 16px 20px;
             border-radius: 8px;
-            
-            span {
-                &:first-of-type {
-                    font-weight: bold;
-                    font-size: 1.2em;
-                }
+            display: grid;
+            gap: 1em;
+            grid-template-columns: 2fr 1fr;
+            align-items: center;
 
-                &:last-of-type {
-                    font-size: 0.85em;
-                    color: $faded_text;
+            .text {
+                display: grid;
+
+                span {
+                    &:first-of-type {
+                        font-weight: bold;
+                        font-size: 1.52em;
+                    }
+    
+                    &:last-of-type {
+                        font-size: 0.85em;
+                        color: $faded_text;
+                    }
                 }
             }
         }
-
     }
 
-    .messages {
-        .message {
-            border-bottom: 1px solid $faded_line;
-            padding: 4px 0;
+    .charts {
+        display: grid;
+        gap: 3.2em;
+        margin: 2em 0 0;
+        padding: 16px 4px;
 
+        h2 {
+            font-size: 1.24em;
+            margin: 0 0 0.5em;
+        }
+
+        canvas {
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .sales_summary {
+            width: 100%;
             p {
+                display: grid;
+                grid-template-columns: 90px 2fr;
+                gap: 0.5em;
+                margin: 0 0 0.8em;
+
                 span {
-                    font-size: 0.8em;
+                    &:first-of-type {
+                        color: $faded_text;
+                    }
                 }
             }
         }
     }
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 768px) and (max-width: 1024px) {
     .Dashboard {
         .stats {
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .charts {
+            grid-template-columns: 3fr 1fr;
+        }
+    }
+}
+
+@media screen and (min-width: 1025px) {
+    .Dashboard {
+        .stats {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        .charts {
+            grid-template-columns: 5fr 1fr;
         }
     }
 }

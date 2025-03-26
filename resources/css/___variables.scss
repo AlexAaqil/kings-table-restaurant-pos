@@ -18,7 +18,7 @@ $themed_background: #1a237e;
 $themed_color: #fff;
 
 
-$dashboard_background: #dcfffd;
+$dashboard_background: #e6fffe;
 $dashboard_color: #000000;
 
 
@@ -38,6 +38,15 @@ $badge_color: #fff;
 $link_color: blue;
 $light_link_color: lightblue;
 
+
+
+.success {
+    color: $success;
+}
+
+.danger {
+    color: $danger;
+}
 
 
 .read,

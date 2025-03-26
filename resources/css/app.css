@@ -1,3 +1,11 @@
+.success {
+  color: #008000;
+}
+
+.danger {
+  color: #ff0000;
+}
+
 .read,
 .inactive {
   color: #575757;
@@ -255,9 +263,17 @@ aside .links {
           align-items: center;
 }
 
+aside .links a {
+  color: #000;
+}
+
 aside .active {
   font-weight: bold;
   border-bottom: 2px solid blue;
+}
+
+aside .active a {
+  color: blue;
 }
 
 aside .footer {
@@ -1275,43 +1291,95 @@ button {
 .Dashboard .stats {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 1fr 1fr;
-      grid-template-columns: 1fr 1fr;
+  -ms-grid-columns: 1fr;
+      grid-template-columns: 1fr;
   gap: 1em;
   padding: 8px 0;
 }
 
 .Dashboard .stats .stat {
-  background: #dcfffd;
+  background: #e6fffe;
+  padding: 16px 20px;
+  border-radius: 8px;
   display: -ms-grid;
   display: grid;
-  padding: 8px 12px;
-  border-radius: 8px;
+  gap: 1em;
+  -ms-grid-columns: 2fr 1fr;
+      grid-template-columns: 2fr 1fr;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
-.Dashboard .stats .stat span:first-of-type {
+.Dashboard .stats .stat .text {
+  display: -ms-grid;
+  display: grid;
+}
+
+.Dashboard .stats .stat .text span:first-of-type {
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.52em;
 }
 
-.Dashboard .stats .stat span:last-of-type {
+.Dashboard .stats .stat .text span:last-of-type {
   font-size: 0.85em;
   color: #575757;
 }
 
-.Dashboard .messages .message {
-  border-bottom: 1px solid #c4c4c4;
-  padding: 4px 0;
+.Dashboard .charts {
+  display: -ms-grid;
+  display: grid;
+  gap: 3.2em;
+  margin: 2em 0 0;
+  padding: 16px 4px;
 }
 
-.Dashboard .messages .message p span {
-  font-size: 0.8em;
+.Dashboard .charts h2 {
+  font-size: 1.24em;
+  margin: 0 0 0.5em;
 }
 
-@media screen and (min-width: 1024px) {
+.Dashboard .charts canvas {
+  max-width: 100%;
+  width: 100%;
+}
+
+.Dashboard .charts .sales_summary {
+  width: 100%;
+}
+
+.Dashboard .charts .sales_summary p {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 90px 2fr;
+      grid-template-columns: 90px 2fr;
+  gap: 0.5em;
+  margin: 0 0 0.8em;
+}
+
+.Dashboard .charts .sales_summary p span:first-of-type {
+  color: #575757;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
   .Dashboard .stats {
-    -ms-grid-columns: (1fr)[5];
-        grid-template-columns: repeat(5, 1fr);
+    -ms-grid-columns: (1fr)[3];
+        grid-template-columns: repeat(3, 1fr);
+  }
+  .Dashboard .charts {
+    -ms-grid-columns: 3fr 1fr;
+        grid-template-columns: 3fr 1fr;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .Dashboard .stats {
+    -ms-grid-columns: (1fr)[6];
+        grid-template-columns: repeat(6, 1fr);
+  }
+  .Dashboard .charts {
+    -ms-grid-columns: 5fr 1fr;
+        grid-template-columns: 5fr 1fr;
   }
 }
 /*# sourceMappingURL=app.css.map */

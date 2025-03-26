@@ -14,11 +14,19 @@ aside {
         display: flex;
         gap: 2em;
         align-items: center;
+
+        a {
+            color: $text_color;
+        }
     }
 
     .active {
         font-weight: bold;
         border-bottom: 2px solid $link_color;
+
+        a {
+            color: $link_color;
+        }
     }
 
     .footer {
@@ -84,120 +92,3 @@ aside {
         }
     }
 }
-
-// $aside_width: 10%;
-
-// aside {
-//     position: sticky;
-//     top: 0;
-//     padding: 4px 8px;
-//     text-align: center;
-//     border-right: 1px solid $faded_line;
-
-//     .header .text,
-//     .text {
-//         @include desktop_only;
-//     }
-
-//     .header {
-//         padding: 0.8em 0 0;
-
-//         img {
-//             width: 35px;
-//             height: 35px;
-//             border-radius: 50%;
-//         }
-//     }
-
-//     ul {
-//         list-style: none;
-//         margin: 0.4em 0;
-
-//         li {
-//             padding: 4px 4px;
-//             border-bottom: 1px solid $faded_line;
-
-//             &:first-of-type {
-//                 border-top: 1px solid $faded_line;
-//             }
-
-//             i {
-//                 @include font_size(1.5em, 1em);
-//             }
-
-//             a {
-//                 color: $text_color;
-//             }
-//         }
-
-//         .active {
-//             a {
-//                 color: $link_color;
-//                 font-weight: bold;
-//             }
-//         }
-//     }
-
-//     .footer {
-//         .logout {
-//             button {
-//                 background: $danger;
-//                 i {
-//                     @include font_size(1.2em, 1em);
-//                 }
-//             }
-//         }
-//     }
-// }
-
-// @media screen and (min-width: 726px) {
-//     aside {
-//         text-align: left;
-
-//         .header {
-//             display: grid;
-//             grid-template-columns: 40px auto;
-//             gap: 0.1em;
-//             align-items: center;
-//             justify-content: start;
-
-//             span {
-//                 font-size: 0.8em;
-//             }
-
-//             .text {
-//                 display: grid;
-//             }
-//         }
-
-//         ul {
-//             li {
-//                 a {
-//                     display: grid;
-//                     grid-template-columns: 0.95em 1fr;
-//                     align-items: center;
-//                     gap: 0.5em;
-
-//                     i {
-//                         justify-self: center;
-//                     }
-//                 }
-//             }
-//         }
-
-//         .footer {
-//             position: absolute;
-//             bottom: 1.5em;
-//             width: 90%;
-//             margin: auto;
-
-//             button {
-//                 width: 100%;
-//                 display: flex;
-//                 gap: 0.4em;
-//                 align-items: center;
-//                 justify-content: center;
-//             }
-//         }
-//     }
-// }

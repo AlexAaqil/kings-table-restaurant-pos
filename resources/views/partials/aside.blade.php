@@ -23,12 +23,6 @@
                 'level' => ['super admin', 'admin'],
             ],
             [
-                'route' => 'products.index',
-                'icon' => 'fas fa-barcode',
-                'text' => 'Products',
-                'level' => ['super admin', 'admin'],
-            ],
-            [
                 'route' => 'shop',
                 'icon' => 'fas fa-barcode',
                 'text' => 'Shop',
@@ -44,6 +38,12 @@
                 'route' => 'sales.index',
                 'icon' => 'fas fa-dollar-sign',
                 'text' => 'Sales',
+                'level' => ['super admin', 'admin'],
+            ],
+            [
+                'route' => 'products.index',
+                'icon' => 'fas fa-barcode',
+                'text' => 'Products',
                 'level' => ['super admin', 'admin'],
             ],
             // [
