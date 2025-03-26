@@ -27,12 +27,12 @@
                                      data-price="{{ $product->getEffectivePrice() }}">
                                     <div class="image">
                                         <img src="{{ $product->getFirstImage() ?? asset('assets/images/default_image.jpg') }}" 
-                                             alt="Product Image" width="100" height="100">
+                                             alt="Product Image" width="80" height="80">
                                     </div>
 
                                     <div class="details">
                                         <p class="title">{{ $product->name }}</p>
-                                        <p class="code">Code: {{ $product->code ?? '-' }}</p>
+                                        {{-- <p class="code">Code: {{ $product->code ?? '-' }}</p> --}}
                                         <p class="prices">
                                             <span class="price success">Ksh. {{ number_format($product->getEffectivePrice(), 2) }}</span>
                                         </p>
@@ -125,7 +125,7 @@
                                     <span class="quantity">${item.quantity}</span>
                                     <button class="increase">+</button>
                                 </p>
-                                <button class="remove"><i class="fas fa-trash-alt"></i> Delete</button>
+                                <button class="remove">X</button>
                             </div>
                         `;
                         cartContent.innerHTML += cartItem;

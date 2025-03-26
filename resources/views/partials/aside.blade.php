@@ -4,18 +4,8 @@
         $user_level_label = $user->user_level_label;
     @endphp
 
-    <div class="header">
-        <a href="{{ route('profile.edit') }}">
-            @if($user->image)
-                <img src="{{ asset('storage/' . ($user->image)) }}" alt="User Image" width="25" height="25">
-            @else
-                <x-default-profile-image width="25" height="25" />
-            @endif
-        </a>
-        <span class="text">
-            {{ $user->first_name . ' ' . $user->last_name }}
-            <span>{{ $user->email }}</span>
-        </span>
+    <div class="branding">
+        <a href="{{ route('dashboard') }}">{{ config('globals.app_acronym') }}</a>
     </div>
 
     @php
@@ -46,13 +36,13 @@
             ],
             [
                 'route' => 'cashier.sales',
-                'icon' => 'fas fa-barcode',
+                'icon' => 'fas fa-dollar-sign',
                 'text' => 'Sales',
                 'level' => ['cashier'],
             ],
             [
                 'route' => 'sales.index',
-                'icon' => 'fas fa-barcode',
+                'icon' => 'fas fa-dollar-sign',
                 'text' => 'Sales',
                 'level' => ['super admin', 'admin'],
             ],
@@ -81,6 +71,19 @@
     </ul>
 
     <div class="footer">
+        <div class="profile">
+            <a href="{{ route('profile.edit') }}">
+                @if($user->image)
+                    <img src="{{ asset('storage/' . ($user->image)) }}" alt="User Image" width="25" height="25">
+                @else
+                    <x-default-profile-image width="25" height="25" />
+                @endif
+            </a>
+            <span class="text">
+                {{ strtoupper(substr($user->first_name, 0, 1)) . ' . ' . strtoupper(substr($user->last_name, 0, 1)) }}
+            </span>
+        </div>
+
         <div class="logout">
             <form action="{{ route('logout') }}" method="post">
                 @csrf
