@@ -118,11 +118,11 @@
                     @endif
                 </div>
 
-                <div class="inputs">
+                {{-- <div class="inputs">
                     <label for="description">Description</label>
                     <textarea name="description" id="editor_ckeditor" rows="10" placeholder="Enter a Description" class="tinymiced">{{ old('description', $product->description) }}</textarea>
                     <x-input-error field="description" />
-                </div>
+                </div> --}}
 
                 <div class="buttons">
                     <button type="submit">Update Product</button>
@@ -147,7 +147,7 @@
         <x-sweetalert />
         <script src="{{ asset('assets/js/jquery.js') }}"></script>
         <script src="{{ asset('assets/js/jquery_ui.js') }}"></script>
-        <x-text-editor />
+        {{-- <x-text-editor /> --}}
         <script>
             $(document).ready(function() {
             $("#sortable").sortable({

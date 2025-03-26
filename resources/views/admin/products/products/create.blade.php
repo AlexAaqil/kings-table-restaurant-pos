@@ -98,11 +98,11 @@
                     <x-input-error field="images" />
                 </div>
 
-                <div class="inputs">
+                {{-- <div class="inputs">
                     <label for="description">Description</label>
                     <textarea name="description" id="editor_ckeditor" rows="10" placeholder="Enter a Description" class="tinymiced">{{ old('description') }}</textarea>
                     <x-input-error field="description" />
-                </div>
+                </div> --}}
 
                 <button type="submit">Save Product</button>
             </form>
@@ -110,6 +110,6 @@
     </section>
 
     <x-slot name="scripts">
-        <x-text-editor />
+        {{-- <x-text-editor /> --}}
     </x-slot>
 </x-authenticated-layout>
