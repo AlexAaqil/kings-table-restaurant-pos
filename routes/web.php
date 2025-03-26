@@ -23,6 +23,7 @@ Route::middleware(['auth', 'verified', 'active'])->group(function() {
 
     Route::get('shop', [ProductController::class, 'shop'])->name('shop');
     Route::post('/sales/store', [SaleController::class, 'store'])->name('sales.store');
+    Route::get('/sales/{sale}/edit', [SaleController::class, 'edit'])->name('sales.edit');
     Route::get('/sales/cashier', [Salecontroller::class, 'cashierSales'])->name('cashier.sales');
     Route::get('/receipt/{sale}', [SaleController::class, 'receipt'])->name('sales.receipt');
 
@@ -36,7 +37,7 @@ Route::middleware(['auth', 'verified', 'active'])->group(function() {
         Route::get('/products/images/delete/{id}', [ProductController::class, 'deleteProductImage'])->name('products.delete_image');
         Route::post('/products/images/sort', [ProductController::class, 'sortProductImages'])->name('products.sort_images');
 
-        Route::resource('sales', SaleController::class)->except('create', 'store', 'show');
+        Route::resource('sales', SaleController::class)->except('create', 'store', 'edit', 'show');
     });
 });
 

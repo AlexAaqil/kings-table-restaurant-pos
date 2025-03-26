@@ -91,11 +91,11 @@
                 </div>
 
                 <div class="buttons">
-                    <button type="submit">Update Sale</button>
+                    @can('view-as-admin')
+                        <button type="submit">Update Sale</button>
+                    @endcan
 
-                    <button type="button" class="btn_success" onclick="printReceipt()">
-                        <i class="fas fa-print"></i> Print Receipt
-                    </button>
+                    <a href="{{ route('sales.receipt', $sale) }}" class="btn_link">Print Receipt</a>
 
                     @can('view-as-super-admin')
                         <button type="button" class="btn_danger" onclick="deleteItem({{ $sale->id }}, 'sale');"
@@ -115,71 +115,9 @@
                 </form>
             @endcan
         </div>
-
-        <div id="receipt" style="display: none;">
-            <div class="receipt-content">
-                <h2>Receipt</h2>
-                <p><strong>Order Number:</strong> {{ $sale->order_number ?? '-' }}</p>
-                <p><strong>Order Date:</strong> {{ $sale->created_at?->format('d M Y') ?? '-' }}</p>
-
-                <h3>Items Ordered:</h3>
-                <ul>
-                    @foreach($sale->items as $product)
-                    <li>
-                        {{ $product['name'] }} - {{ $product['quantity'] }} @ Ksh. {{ number_format($product['selling_price'], 2) }} 
-                        = Ksh. {{ number_format($product['selling_price'] * $product['quantity'], 2) }}
-                    </li>
-                    @endforeach
-                </ul>
-
-                <p class="bold"><strong>Total Amount:</strong> Ksh. {{ number_format($sale->total_amount, 2) }}</p>
-                <p><strong>Amount Paid:</strong> Ksh. {{ number_format($sale->amount_paid ?? 0, 2) }}</p>
-
-                <h3>Thank You for Shopping with Us!</h3>
-            </div>
-        </div>
     </section>
 
     <x-slot name="scripts">
         <x-sweetalert />
-        <script>
-            function printReceipt() {
-                var receiptContent = document.getElementById("receipt").innerHTML;
-                var printWindow = window.open('', '', 'width=800,height=600');
-                printWindow.document.open();
-                printWindow.document.write(`
-                    <html>
-                    <head>
-                        <title>Print Receipt</title>
-                        <style>
-                            body { 
-                                font-family: Arial, sans-serif; 
-                                text-align: center; 
-                            }
-                            
-                            .receipt-content { 
-                                width: 80%; 
-                                margin: auto; 
-                                padding: 20px; 
-                                border: 1px solid #ccc; 
-                            }
-                            
-                            h2, h3 { 
-                                color: #333; 
-                            }
-                            
-                            p, li { 
-                                font-size: 16px; 
-                            }
-                        </style>
-                    </head>
-                    <body onload="window.print(); window.close();">
-                        ${receiptContent}
-                    </body>
-                    </html>
-                `);
-                printWindow.document.close();
-            }
-        </script>
     </x-slot>
 </x-authenticated-layout>

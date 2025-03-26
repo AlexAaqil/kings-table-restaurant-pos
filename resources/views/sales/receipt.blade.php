@@ -1,6 +1,59 @@
 <x-authenticated-layout>
     <x-slot name="head">
         <title>Receipt</title>
+        <style>
+            @media print {
+                body {
+                    font-family: Arial, sans-serif;
+                    font-size: 12px;
+                    width: 58mm; /* Adjust for 58mm or 80mm */
+                }
+
+                .receipt-container {
+                    width: 100%;
+                    max-width: 58mm; /* Ensure the receipt width is within the thermal paper */
+                    padding: 5px;
+                    margin: 0;
+                }
+
+                h2 {
+                    text-align: center;
+                    font-size: 14px;
+                    margin-bottom: 5px;
+                }
+
+                p {
+                    margin: 2px 0;
+                    text-align: center;
+                }
+
+                .receipt-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 10px;
+                }
+
+                .receipt-table th,
+                .receipt-table td {
+                    border-bottom: 1px dashed #000;
+                    padding: 2px;
+                    text-align: left;
+                }
+
+                .receipt-table th {
+                    font-size: 12px;
+                    text-align: left;
+                }
+
+                .receipt-table td {
+                    font-size: 10px;
+                }
+
+                .print-button {
+                    display: none; /* Hide the print button when printing */
+                }
+            }
+        </style>
     </x-slot>
 
     <section class="receipt">
@@ -14,7 +67,7 @@
                 <thead>
                     <tr>
                         <th>Product</th>
-                        <th>Quantity</th>
+                        <th>Qty</th>
                         <th>Price</th>
                         <th>Total</th>
                     </tr>
@@ -24,8 +77,8 @@
                         <tr>
                             <td>{{ $item->title }}</td>
                             <td>{{ $item->quantity }}</td>
-                            <td>Ksh. {{ number_format($item->selling_price, 2) }}</td>
-                            <td>Ksh. {{ number_format($item->selling_price * $item->quantity, 2) }}</td>
+                            <td>{{ number_format($item->selling_price, 2) }}</td>
+                            <td>{{ number_format($item->selling_price * $item->quantity, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -34,6 +87,7 @@
             <p><strong>Total: Ksh. {{ number_format($sale->total_amount, 2) }}</strong></p>
             <p>Amount Paid: Ksh. {{ number_format($sale->amount_paid, 2) }}</p>
             <p>Change Given: Ksh. {{ number_format($sale->amount_paid - $sale->total_amount, 2) }}</p>
+            <p><b>Thank you and welcome again!</b></p>
 
             <button onclick="window.print()" class="print-button">Print Receipt</button>
         </div>

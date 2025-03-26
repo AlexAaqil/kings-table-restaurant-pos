@@ -26,6 +26,7 @@
                                 <th>Order</th>
                                 <th>Amount</th>
                                 <th class="center">Payment</th>
+                                <th class="actions center">Actions</th>
                             </tr>
                         </thead>
             
@@ -41,6 +42,13 @@
                                         @else
                                             <i class="fa fa-times-circle danger"></i>
                                         @endif
+                                    </td>
+                                    <td class="actions center">
+                                        <div class="action">
+                                            <a href="{{ route('sales.edit', $sale->id) }}">
+                                                <span class="fas fa-eye"></span> 
+                                            </a> 
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

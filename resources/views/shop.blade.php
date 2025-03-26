@@ -132,6 +132,20 @@
                     });
 
                     document.getElementById("cartTotal").innerText = total.toFixed(2);
+
+                    // Pre-fill "Amount Paid" field
+                    document.getElementById("amountPaid").value = total.toFixed(2);
+
+                    // Update change field dynamically
+                    updateChangeGiven();
+                }
+
+                function updateChangeGiven() {
+                    let amountPaid = parseFloat(document.getElementById("amountPaid").value) || 0;
+                    let total = parseFloat(document.getElementById("cartTotal").innerText) || 0;
+                    let change = (amountPaid - total).toFixed(2);
+
+                    document.getElementById("changeGiven").value = change >= 0 ? change : "Insufficient amount";
                 }
 
                 // Add products to cart
@@ -173,9 +187,13 @@
                     updateCartUI();
                 });
 
+                // Handle amount paid input and change given
+                document.getElementById("amountPaid").addEventListener("input", updateChangeGiven);
+
                 // Handle checkout
                 document.getElementById("checkoutButton").addEventListener("click", function () {
-                    let amountPaid = parseFloat(document.getElementById("amountPaid").value);
+                    let enteredAmount = parseFloat(document.getElementById("amountPaid").value);
+                    let total = parseFloat(document.getElementById("cartTotal").innerText);
                     let paymentMethod = document.getElementById("paymentMethod").value;
 
                     if (Object.keys(cart).length === 0) {
@@ -183,22 +201,25 @@
                         return;
                     }
 
-                    if (!amountPaid || amountPaid < 0) {
-                        alert("Enter a valid amount paid.");
+                    if (!enteredAmount || enteredAmount < total) {
+                        alert("Amount paid is less than the total cost!");
                         return;
                     }
 
-                    let total = Object.values(cart).reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-                    if (amountPaid < total) {
-                        alert("Amount paid is less than total cost!");
+                    // Ask for confirmation on the actual amount paid
+                    let confirmedAmount = prompt(`Confirm the actual amount paid (Total: Ksh. ${total.toFixed(2)}):`, enteredAmount);
+                    
+                    if (!confirmedAmount || isNaN(confirmedAmount) || parseFloat(confirmedAmount) < total) {
+                        alert("Invalid or insufficient amount entered. Please enter the correct amount.");
                         return;
                     }
+
+                    confirmedAmount = parseFloat(confirmedAmount);
 
                     let saleData = {
                         items: Object.values(cart),
                         total_amount: total,
-                        amount_paid: amountPaid,
+                        amount_paid: confirmedAmount,
                         payment_method: paymentMethod
                     };
 
@@ -213,9 +234,13 @@
                     .then(response => response.json())
                     .then(data => {
                         alert("Sale completed successfully! Change Given: Ksh. " + data.change);
+
+                        // Clear cart and fields
                         cart = {};
                         updateCartUI();
-
+                        document.getElementById("amountPaid").value = "";
+                        document.getElementById("changeGiven").value = "";
+                        
                         // Redirect to receipt page
                         window.location.href = `/receipt/${data.sale_id}`;
                     })

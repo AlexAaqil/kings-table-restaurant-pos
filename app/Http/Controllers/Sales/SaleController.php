@@ -37,7 +37,7 @@ class SaleController extends Controller
         ]);
 
         return DB::transaction(function () use ($request) {
-            $orderNumber = 'ORD-' . Str::upper(Str::random(10));
+            $orderNumber = 'POS-' . Carbon::now()->format('dmY') . '-' . Str::upper(Str::random(4));
 
             // Create a new sale
             $sale = Sale::create([
