@@ -94,22 +94,24 @@ $table->timestamps();
 }
 
 # User Journeys
-
 ## Admin
 
--   Can CRUD users.
+- Can CRUD users.
 
--   Can CRUD product categories.
--   Can CRUD products.
+- Can CRUD product categories.
+- Can CRUD products.
 
--   Can CRUD sales.
+- Can CRUD sales.
 
 ## Cashier
 
--   Can R sales.
+- Can R sales.
+- Can P sales receipt.
+
+
+
 
 # TODOs
-
--   cashiers dashboard.
--   sales page should have sales for today, yesterday and this week.
--   improve the logic for printing receipts.
+<!-- - cashiers dashboard. -->
+- sales page should have sales for today, yesterday and this week.
+- improve the logic for printing receipts.

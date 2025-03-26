@@ -191,6 +191,14 @@
 }
 
 @media screen and (min-width: 1025px) {
+    .MainApp {
+        .app_content {
+            .row_container {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+    }
+    
     .POSShop {
         .product_list {
             grid-template-columns: 1fr 1fr 1fr;

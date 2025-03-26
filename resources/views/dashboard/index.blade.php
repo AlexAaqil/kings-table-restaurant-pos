@@ -7,7 +7,7 @@
         @include('dashboard.admin')
     @endif
 
-    @if($user->user_level_label === 'user')
+    @if($user->user_level_label === 'cashier')
         @include('dashboard.user')
     @endif
 </x-authenticated-layout>

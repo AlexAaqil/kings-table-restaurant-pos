@@ -1278,6 +1278,10 @@ button {
 }
 
 @media screen and (min-width: 1025px) {
+  .MainApp .app_content .row_container {
+    -ms-grid-columns: 2fr 1fr;
+        grid-template-columns: 2fr 1fr;
+  }
   .POSShop .product_list {
     -ms-grid-columns: 1fr 1fr 1fr;
         grid-template-columns: 1fr 1fr 1fr;
@@ -1331,7 +1335,7 @@ button {
   display: grid;
   gap: 3.2em;
   margin: 2em 0 0;
-  padding: 16px 4px;
+  padding: 16px 8px;
 }
 
 .Dashboard .charts h2 {
@@ -1378,8 +1382,8 @@ button {
         grid-template-columns: repeat(6, 1fr);
   }
   .Dashboard .charts {
-    -ms-grid-columns: 5fr 1fr;
-        grid-template-columns: 5fr 1fr;
+    -ms-grid-columns: 4fr 2fr;
+        grid-template-columns: 4fr 2fr;
   }
 }
 /*# sourceMappingURL=app.css.map */
