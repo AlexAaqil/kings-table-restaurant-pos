@@ -1,20 +1,23 @@
 function searchFunction() {
-    // Get the input value
-    var input = document.getElementById("myInput");
-    var filter = input.value.toUpperCase();
+    let input = document.getElementById("myInput");
+    let filter = input.value.trim().toUpperCase();
+    let searchableContainers = document.querySelectorAll(".searchable");
 
-    // Get all elements with the class name "item"
-    var items = document.getElementsByClassName("searchable");
+    searchableContainers.forEach(container => {
+        let items = container.children; // Get all direct children
+        let matchFound = false;
 
-    // Loop through all items and hide those that don't match the search query
-    for (var i = 0; i < items.length; i++) {
-        var item = items[i];
-        var text = item.textContent || item.innerText;
+        Array.from(items).forEach(item => {
+            let text = item.textContent || item.innerText;
+            if (text.toUpperCase().includes(filter)) {
+                item.style.display = ""; // Show matching item
+                matchFound = true;
+            } else {
+                item.style.display = "none"; // Hide non-matching item
+            }
+        });
 
-        if (text.toUpperCase().indexOf(filter) > -1) {
-            item.style.display = "";
-        } else {
-            item.style.display = "none";
-        }
-    }
+        // Hide the entire container if none of its children match
+        container.style.display = matchFound ? "" : "none";
+    });
 }

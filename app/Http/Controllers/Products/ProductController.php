@@ -15,11 +15,20 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $categories = ProductCategory::with(['products' => function($query) {
+        $categories = ProductCategory::withCount([
+            'products',
+            'products as visible_products_count' => function ($query) {
+                $query->where('is_visible', 1);
+            }
+        ])->with(['products' => function ($query) {
             $query->orderBy('product_order')->orderBy('name');
         }])->orderBy('name')->get();
 
-        return view('admin.products.products.index', compact('categories'));
+        $count_products = $categories->sum('products_count');
+        $count_visible_products = $categories->sum('visible_products_count');
+        $count_categories = $categories->count();
+
+        return view('admin.products.products.index', compact('categories', 'count_products', 'count_visible_products', 'count_categories'));
     }
 
     public function create(Request $request)
@@ -263,9 +272,18 @@ class ProductController extends Controller
 
     public function shop()
     {
-        $products = Product::with('category', 'images')->orderBy('product_order')->orderBy('name')->get();
-        $count_products = $products->count();
+        $categories = ProductCategory::withCount([
+            'products' => function ($query) {
+                $query->where('is_visible', 1);
+            }
+        ])->with([
+            'products' => function ($query) {
+                $query->where('is_visible', 1)->orderBy('product_order')->orderBy('name');
+            }
+        ])->orderBy('name')->get();
 
-        return view('shop', compact('count_products', 'products'));
+        $count_products = $categories->sum('products_count');
+
+        return view('shop', compact('categories', 'count_products'));
     }
 }

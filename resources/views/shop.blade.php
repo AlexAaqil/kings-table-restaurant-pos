@@ -1,14 +1,14 @@
 <x-authenticated-layout>
     <x-slot name="head">
-        <title>POS System</title>
+        <title>Shop</title>
     </x-slot>
 
-    <section class="POSShop">
+    <section class="POSShop Products">
         <div class="row_container">
             <!-- Products Section -->
             <div class="column">
-                @if ($products->isNotEmpty())
-                    <div class="table list_items">
+                @if ($categories->isNotEmpty())
+                    <div class="table">
                         <div class="header">
                             <div class="details">
                                 <p class="title">Products</p>
@@ -16,31 +16,41 @@
                                     <span>{{ $count_products }} {{ Str::plural('Product', $count_products) }}</span>
                                 </p>
                             </div>
+        
                             <x-search-input />
+
+                            <div class="btn">
+                                <a href="{{ route('product-categories.create') }}">New Category</a>
+                            </div>
                         </div>
-
-                        <div class="product_list">
-                            @foreach($products as $product)
-                                <div class="product searchable" 
-                                     data-id="{{ $product->id }}" 
-                                     data-name="{{ $product->name }}" 
-                                     data-price="{{ $product->getEffectivePrice() }}">
-                                    <div class="image">
-                                        <img src="{{ $product->getFirstImage() ?? asset('assets/images/default_image.jpg') }}" 
-                                             alt="Product Image" width="80" height="80">
-                                    </div>
-
-                                    <div class="details">
-                                        <p class="title">{{ $product->name }}</p>
-                                        {{-- <p class="code">Code: {{ $product->code ?? '-' }}</p> --}}
-                                        <p class="prices">
-                                            <span class="price success">Ksh. {{ number_format($product->getEffectivePrice(), 2) }}</span>
-                                        </p>
-                                        <p class="category">{{ $product->category->name ?? 'uncategorized' }}</p>
-                                    </div>
+                        
+                        @foreach($categories as $category)
+                            <div class="categorized_products searchable">
+                                <div class="category_header">
+                                    <p class="title">{{ $category->name }}</p>
                                 </div>
-                            @endforeach
-                        </div>
+
+                                <div class="cards">
+                                    @forelse($category->products as $product)
+                                        <div class="card searchable {{ $product->is_visible ? '' : 'danger_border' }}" data-id="{{ $product->id }}" data-name="{{ $product->name }}" data-price="{{ $product->getEffectivePrice() }}">
+                                            <div class="image">
+                                                <img src="{{ $product->getFirstImage() ?? asset('assets/images/default_image.jpg') }}" alt="Product Image" width="80" height="80">
+                                            </div>
+
+                                            <div class="details">
+                                                <p class="title">{{ $product->name }}</p>
+                                                <p class="prices">
+                                                    <span class="price success">Ksh. {{ number_format($product->getEffectivePrice(), 2) }}</span>
+                                                </p>
+                                                <p class="category">{{ $product->category->name ?? 'uncategorized' }}</p>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <p class="no-products">No products in this category.</p>
+                                    @endforelse
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 @else
                     <p>No products available.</p>
@@ -87,19 +97,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Printable Receipt Section -->
-        {{-- <div class="receipt hidden">
-            <h2>Receipt</h2>
-            <div class="receipt_content">
-                <p><b>Date:</b> <span id="receiptDate"></span></p>
-                <p><b>Payment Method:</b> <span id="receiptPaymentMethod"></span></p>
-                <p><b>Total:</b> Ksh. <span id="receiptTotal"></span></p>
-                <p><b>Amount Paid:</b> Ksh. <span id="receiptPaid"></span></p>
-                <p><b>Change Given:</b> Ksh. <span id="receiptChange"></span></p>
-            </div>
-            <button id="printReceipt">Print Receipt</button>
-        </div> --}}
     </section>
 
     <x-slot name="scripts">
@@ -149,7 +146,7 @@
                 }
 
                 // Add products to cart
-                document.querySelectorAll(".product").forEach(product => {
+                document.querySelectorAll(".card").forEach(product => {
                     product.addEventListener("click", function () {
                         let id = this.dataset.id;
                         let name = this.dataset.name;

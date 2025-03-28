@@ -117,8 +117,8 @@ $table->timestamps();
 <!-- - improve the logic for printing receipts. -->
 
 
-- payment transaction reports searchable by transaction code.
 - list products grouped in categories.
+- payment transaction reports searchable by transaction code.
 
 Cashiers:
 - shifts for cashiers.
@@ -134,3 +134,42 @@ Admins:
 - sales reports with a filter option by total, date and time and cashier name.
 - calculate total for each payment method.
 - have an option to enter the commission a cashier can be paid with according to their daily sales.
+
+
+
+
+
+{{-- <div class="table list_items">
+                        <div class="header">
+                            <div class="details">
+                                <p class="title">Products</p>
+                                <p class="stats">
+                                    <span>{{ $count_products }} {{ Str::plural('Product', $count_products) }}</span>
+                                </p>
+                            </div>
+                            <x-search-input />
+                        </div>
+
+                        <div class="product_list">
+                            @foreach($products as $product)
+                                <div class="product searchable" 
+                                     data-id="{{ $product->id }}" 
+                                     data-name="{{ $product->name }}" 
+                                     data-price="{{ $product->getEffectivePrice() }}">
+                                    <div class="image">
+                                        <img src="{{ $product->getFirstImage() ?? asset('assets/images/default_image.jpg') }}" 
+                                             alt="Product Image" width="80" height="80">
+                                    </div>
+
+                                    <div class="details">
+                                        <p class="title">{{ $product->name }}</p>
+                                        {{-- <p class="code">Code: {{ $product->code ?? '-' }}</p> --}}
+                                        <p class="prices">
+                                            <span class="price success">Ksh. {{ number_format($product->getEffectivePrice(), 2) }}</span>
+                                        </p>
+                                        <p class="category">{{ $product->category->name ?? 'uncategorized' }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> --}}

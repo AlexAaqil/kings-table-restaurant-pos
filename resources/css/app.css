@@ -882,8 +882,8 @@ button,
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
-  -webkit-box-shadow: 2px 2px 6px #808080;
-          box-shadow: 2px 2px 6px #808080;
+  -webkit-box-shadow: 1px 2px 4px #c4c4c4;
+          box-shadow: 1px 2px 4px #c4c4c4;
   border-radius: 8px;
   padding: 8px;
 }
@@ -898,7 +898,7 @@ button,
   padding: 4px;
 }
 
-.cards .card .image a img {
+.cards .card .image img {
   border-radius: 8px;
   -o-object-fit: cover;
      object-fit: cover;
@@ -1285,7 +1285,7 @@ button,
 }
 
 .Products .categorized_products .category_header {
-  margin: 0 0 0.8em;
+  margin: 0 0 0.4em;
 }
 
 .Products .categorized_products .category_header .title {
@@ -1301,7 +1301,7 @@ button,
 
 @media screen and (min-width: 1025px) {
   .Products .categorized_products .category_header .title {
-    font-size: 1.28em;
+    font-size: 1.16em;
   }
 }
 
@@ -1312,44 +1312,32 @@ button,
   gap: 2em;
 }
 
-.POSShop .product_list {
-  display: -ms-grid;
-  display: grid;
-  gap: 1.5em;
+.POSShop .cards {
+  padding: 4px;
 }
 
-.POSShop .product_list .product {
-  display: -ms-grid;
-  display: grid;
-  gap: 0.4em;
-  -ms-grid-columns: 1fr 2fr;
-      grid-template-columns: 1fr 2fr;
-  background: #f7f7f7;
-  padding: 12px 16px;
-  border-radius: 16px;
+.POSShop .cards .card {
+  -ms-grid-columns: 90px 1fr;
+      grid-template-columns: 90px 1fr;
 }
 
-.POSShop .product_list .product .image {
+.POSShop .cards .card .image {
   width: 80px;
   height: 80px;
 }
 
-.POSShop .product_list .product .image img {
-  border-radius: 8px;
-}
-
-.POSShop .product_list .product .details {
+.POSShop .cards .card .details {
   display: -ms-grid;
   display: grid;
   gap: 0.2em;
 }
 
-.POSShop .product_list .product .details .code,
-.POSShop .product_list .product .details .price {
+.POSShop .cards .card .details .code,
+.POSShop .cards .card .details .price {
   font-size: 0.96rem;
 }
 
-.POSShop .product_list .product .details .category {
+.POSShop .cards .card .details .category {
   font-size: 0.76em;
   color: #363636;
 }
@@ -1437,14 +1425,14 @@ button,
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-  .POSShop .product_list {
+  .POSShop .cards {
     -ms-grid-columns: 1fr 1fr;
         grid-template-columns: 1fr 1fr;
   }
 }
 
 @media screen and (min-width: 1025px) {
-  .POSShop .product_list {
+  .POSShop .cards {
     -ms-grid-columns: 1fr 1fr 1fr;
         grid-template-columns: 1fr 1fr 1fr;
   }

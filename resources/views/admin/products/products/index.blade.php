@@ -16,7 +16,8 @@
                         <div class="details">
                             <p class="title">Products</p>
                             <p class="stats">
-                                <span>{{ $categories->sum(fn($category) => $category->products->count()) }} Products</span>
+                                <span>{{ $count_visible_products }} / {{ $count_products }} {{ Str::plural('Product', $count_products) }}</span>
+                                <span>{{ $count_categories }} {{ Str::plural('Category', $count_categories) }}</span>
                             </p>
                         </div>
     
@@ -28,7 +29,7 @@
                     </div>
 
                     @foreach($categories as $category)
-                        <div class="categorized_products">
+                        <div class="categorized_products searchable">
                             <div class="category_header">
                                 <p class="title">{{ $category->name }}</p>
 
@@ -40,7 +41,7 @@
 
                             <div class="cards">
                                 @forelse($category->products as $product)
-                                    <div class="card searchable {{ $product->is_visible ? '' : 'danger_border' }}">
+                                    <div class="card {{ $product->is_visible ? '' : 'danger_border' }}">
                                         <div class="image">
                                             <a href="{{ route('products.edit', $product->id) }}">
                                                 <img src="{{ $product->getFirstImage() ?? asset('assets/images/default_image.jpg') }}" alt="Product Image" width="300" height="300">
@@ -90,6 +91,32 @@
     </section>
 
     <x-slot name="scripts">
-        <x-search />
+        <script>
+            function searchFunction() {
+                let input = document.getElementById("myInput");
+                let filter = input.value.trim().toUpperCase();
+                let searchableCategories = document.querySelectorAll(".searchable");
+
+                searchableCategories.forEach(category => {
+                    let cardsContainer = category.querySelector(".cards");
+                    let cards = cardsContainer ? cardsContainer.getElementsByClassName("card") : [];
+                    let matchFound = false;
+
+                    // Loop through each product card inside the category
+                    Array.from(cards).forEach(card => {
+                        let text = card.textContent || card.innerText;
+                        if (text.toUpperCase().includes(filter)) {
+                            card.style.display = ""; // Show matching product
+                            matchFound = true;
+                        } else {
+                            card.style.display = "none"; // Hide non-matching product
+                        }
+                    });
+
+                    // Hide entire category if no product matches
+                    category.style.display = matchFound ? "" : "none";
+                });
+            }
+        </script>
     </x-slot>
 </x-authenticated-layout>
