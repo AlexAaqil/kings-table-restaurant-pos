@@ -6,7 +6,7 @@
 
         .text {
             .title {
-                @include font_size(1.2em, 3.2em);
+                @include font_size(1.2em, 1.2em, 3.2em);
                 margin: 0 0 0.8em;
             }
 

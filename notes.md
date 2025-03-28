@@ -113,5 +113,24 @@ $table->timestamps();
 
 # TODOs
 <!-- - cashiers dashboard. -->
-- sales page should have sales for today, yesterday and this week.
-- improve the logic for printing receipts.
+<!-- - sales page should have sales for today, yesterday and this week. -->
+<!-- - improve the logic for printing receipts. -->
+
+
+- payment transaction reports searchable by transaction code.
+- list products grouped in categories.
+
+Cashiers:
+- shifts for cashiers.
+- split order to pay with more than one payment method like mpesa and cash.
+- start with a receipt for unpaid orders.
+- receipt for paid orders.
+
+
+
+Admins:
+- Admins can delete pending orders.
+- filter for transactions according to cashiers by day, month.
+- sales reports with a filter option by total, date and time and cashier name.
+- calculate total for each payment method.
+- have an option to enter the commission a cashier can be paid with according to their daily sales.

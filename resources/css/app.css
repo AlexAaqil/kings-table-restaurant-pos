@@ -1,9 +1,13 @@
 .success {
-  color: #008000;
+  color: #008000 !important;
 }
 
 .danger {
-  color: #ff0000;
+  color: #ff0000 !important;
+}
+
+.danger_border {
+  border: 1px solid #ff0000;
 }
 
 .read,
@@ -871,10 +875,17 @@ button,
 }
 
 .cards .card {
-  -webkit-box-shadow: 4px 6px 8px #808080;
-          box-shadow: 4px 6px 8px #808080;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 130px 1fr;
+      grid-template-columns: 130px 1fr;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-shadow: 2px 2px 6px #808080;
+          box-shadow: 2px 2px 6px #808080;
   border-radius: 8px;
-  padding: 8px 0;
+  padding: 8px;
 }
 
 .cards .card a {
@@ -882,20 +893,26 @@ button,
 }
 
 .cards .card .image {
-  height: 300px;
+  height: 120px;
+  width: 120px;
   padding: 4px;
 }
 
 .cards .card .image a img {
   border-radius: 8px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .cards .card .text {
-  padding: 10px 16px 15px;
+  padding: 4px;
+  display: -ms-grid;
+  display: grid;
+  gap: 0.2em;
 }
 
 .cards .card .text .extra_details {
-  margin: 0.8em 0;
+  margin: 0.2em 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -909,8 +926,20 @@ button,
 }
 
 .cards .card .text .details .title {
-  font-size: 1.28em;
+  font-size: 1.12em;
   margin: 0 0 0.4em;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .cards .card .text .details .title {
+    font-size: 1.12em;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .cards .card .text .details .title {
+    font-size: 1.28em;
+  }
 }
 
 .cards .card .text .details .prices {
@@ -924,38 +953,21 @@ button,
 }
 
 .cards .card .text .details .prices .price {
-  font-size: 1.48em;
+  font-size: 1em;
   font-weight: bold;
   color: #008000;
 }
 
-.cards .card .text .row {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: 1fr 100px;
-      grid-template-columns: 1fr 100px;
-  gap: 1.2em;
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .cards .card .text .details .prices .price {
+    font-size: 1em;
+  }
 }
 
-.cards .card .text .row .cart {
-  -ms-grid-column-align: center;
-      justify-self: center;
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
-}
-
-.cards .card .text .row .cart form {
-  text-align: center;
-}
-
-.cards .card .text .row .cart form button {
-  background: unset;
-}
-
-.cards .card .text .row .cart form button span {
-  font-size: 2.8em;
-  color: #1a237e;
+@media screen and (min-width: 1025px) {
+  .cards .card .text .details .prices .price {
+    font-size: 1.18em;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -979,7 +991,13 @@ button,
   margin: 0 0 0.8em;
 }
 
-@media screen and (min-width: 726px) {
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .ContactPage .container .text .title {
+    font-size: 1.2em;
+  }
+}
+
+@media screen and (min-width: 1025px) {
   .ContactPage .container .text .title {
     font-size: 3.2em;
   }
@@ -1120,6 +1138,119 @@ button,
   gap: 2em;
 }
 
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .MainApp .app_content .row_container {
+    -ms-grid-columns: 2fr 1fr;
+        grid-template-columns: 2fr 1fr;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .MainApp .app_content .row_container {
+    -ms-grid-columns: 2fr 1fr;
+        grid-template-columns: 2fr 1fr;
+  }
+}
+
+.Dashboard .section {
+  margin: 0 0 0.8em;
+}
+
+.Dashboard .stats {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr;
+      grid-template-columns: 1fr;
+  gap: 1em;
+  padding: 8px 0;
+}
+
+.Dashboard .stats .stat {
+  background: #e6fffe;
+  padding: 16px 20px;
+  border-radius: 8px;
+  display: -ms-grid;
+  display: grid;
+  gap: 1em;
+  -ms-grid-columns: 2fr 1fr;
+      grid-template-columns: 2fr 1fr;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.Dashboard .stats .stat .text {
+  display: -ms-grid;
+  display: grid;
+}
+
+.Dashboard .stats .stat .text span:first-of-type {
+  font-weight: bold;
+  font-size: 1.52em;
+}
+
+.Dashboard .stats .stat .text span:last-of-type {
+  font-size: 0.85em;
+  color: #575757;
+}
+
+.Dashboard .charts {
+  display: -ms-grid;
+  display: grid;
+  gap: 3.2em;
+  margin: 2em 0 0;
+  padding: 16px 8px;
+}
+
+.Dashboard .charts h2 {
+  font-size: 1.24em;
+  margin: 0 0 0.5em;
+}
+
+.Dashboard .charts canvas {
+  max-width: 100%;
+  width: 100%;
+}
+
+.Dashboard .charts .sales_summary {
+  width: 100%;
+}
+
+.Dashboard .charts .sales_summary p {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 90px 2fr;
+      grid-template-columns: 90px 2fr;
+  gap: 0.5em;
+  margin: 0 0 0.8em;
+}
+
+.Dashboard .charts .sales_summary p span:first-of-type {
+  color: #575757;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .Dashboard .stats {
+    -ms-grid-columns: (1fr)[3];
+        grid-template-columns: repeat(3, 1fr);
+  }
+  .Dashboard .charts {
+    -ms-grid-columns: 3fr 1fr;
+        grid-template-columns: 3fr 1fr;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .Dashboard .stats {
+    -ms-grid-columns: (1fr)[6];
+        grid-template-columns: repeat(6, 1fr);
+  }
+  .Dashboard .charts {
+    -ms-grid-columns: 4fr 2fr;
+        grid-template-columns: 4fr 2fr;
+  }
+}
+
 .Products .product_images {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1147,6 +1278,38 @@ button,
   right: -5px;
   font-size: 1.2em;
   color: #ff0000;
+}
+
+.Products .categorized_products {
+  margin: 0 0 2em;
+}
+
+.Products .categorized_products .category_header {
+  margin: 0 0 0.8em;
+}
+
+.Products .categorized_products .category_header .title {
+  font-size: 1.12em;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .Products .categorized_products .category_header .title {
+    font-size: 1.12em;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .Products .categorized_products .category_header .title {
+    font-size: 1.28em;
+  }
+}
+
+.Products .categorized_products .category_header .text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 2em;
 }
 
 .POSShop .product_list {
@@ -1274,10 +1437,6 @@ button,
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-  .MainApp .app_content .row_container {
-    -ms-grid-columns: 2fr 1fr;
-        grid-template-columns: 2fr 1fr;
-  }
   .POSShop .product_list {
     -ms-grid-columns: 1fr 1fr;
         grid-template-columns: 1fr 1fr;
@@ -1285,112 +1444,9 @@ button,
 }
 
 @media screen and (min-width: 1025px) {
-  .MainApp .app_content .row_container {
-    -ms-grid-columns: 2fr 1fr;
-        grid-template-columns: 2fr 1fr;
-  }
   .POSShop .product_list {
     -ms-grid-columns: 1fr 1fr 1fr;
         grid-template-columns: 1fr 1fr 1fr;
-  }
-}
-
-.Dashboard .section {
-  margin: 0 0 0.8em;
-}
-
-.Dashboard .stats {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: 1fr;
-      grid-template-columns: 1fr;
-  gap: 1em;
-  padding: 8px 0;
-}
-
-.Dashboard .stats .stat {
-  background: #e6fffe;
-  padding: 16px 20px;
-  border-radius: 8px;
-  display: -ms-grid;
-  display: grid;
-  gap: 1em;
-  -ms-grid-columns: 2fr 1fr;
-      grid-template-columns: 2fr 1fr;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.Dashboard .stats .stat .text {
-  display: -ms-grid;
-  display: grid;
-}
-
-.Dashboard .stats .stat .text span:first-of-type {
-  font-weight: bold;
-  font-size: 1.52em;
-}
-
-.Dashboard .stats .stat .text span:last-of-type {
-  font-size: 0.85em;
-  color: #575757;
-}
-
-.Dashboard .charts {
-  display: -ms-grid;
-  display: grid;
-  gap: 3.2em;
-  margin: 2em 0 0;
-  padding: 16px 8px;
-}
-
-.Dashboard .charts h2 {
-  font-size: 1.24em;
-  margin: 0 0 0.5em;
-}
-
-.Dashboard .charts canvas {
-  max-width: 100%;
-  width: 100%;
-}
-
-.Dashboard .charts .sales_summary {
-  width: 100%;
-}
-
-.Dashboard .charts .sales_summary p {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: 90px 2fr;
-      grid-template-columns: 90px 2fr;
-  gap: 0.5em;
-  margin: 0 0 0.8em;
-}
-
-.Dashboard .charts .sales_summary p span:first-of-type {
-  color: #575757;
-}
-
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  .Dashboard .stats {
-    -ms-grid-columns: (1fr)[3];
-        grid-template-columns: repeat(3, 1fr);
-  }
-  .Dashboard .charts {
-    -ms-grid-columns: 3fr 1fr;
-        grid-template-columns: 3fr 1fr;
-  }
-}
-
-@media screen and (min-width: 1025px) {
-  .Dashboard .stats {
-    -ms-grid-columns: (1fr)[6];
-        grid-template-columns: repeat(6, 1fr);
-  }
-  .Dashboard .charts {
-    -ms-grid-columns: 4fr 2fr;
-        grid-template-columns: 4fr 2fr;
   }
 }
 /*# sourceMappingURL=app.css.map */

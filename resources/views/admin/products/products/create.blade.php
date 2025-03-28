@@ -20,10 +20,11 @@
                 <div class="input_group_3">
                     <div class="inputs">
                         <label for="category_id">Product Category</label>
-                        <select name="category_id" id="category_id">
-                            <option value="">Select Category</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                        <select name="category_id">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" {{ $category->id == $selected_category_id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
                             @endforeach
                         </select>
                         <x-input-error field="category_id" />

@@ -15,17 +15,19 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category', 'images')->orderBy('product_order')->orderBy('name')->get();
-        $count_products = $products->count();
+        $categories = ProductCategory::with(['products' => function($query) {
+            $query->orderBy('product_order')->orderBy('name');
+        }])->orderBy('name')->get();
 
-        return view('admin.products.products.index', compact('count_products', 'products'));
+        return view('admin.products.products.index', compact('categories'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $categories = ProductCategory::orderBy('name')->get();
+        $selected_category_id = $request->input('category_id');
 
-        return view('admin.products.products.create', compact('categories'));
+        return view('admin.products.products.create', compact('categories', 'selected_category_id'));
     }
 
     public function store(Request $request)

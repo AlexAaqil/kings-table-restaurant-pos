@@ -17,6 +17,11 @@ class ProductCategoryController extends Controller
         return view('admin.products.product-categories.index', compact('count_product_categories', 'product_categories'));
     }
 
+    public function create()
+    {
+        return view('admin.products.product-categories.create');
+    }
+
     public function store(Request $request)
     {
         $validated_data = $request->validate([
@@ -27,7 +32,7 @@ class ProductCategoryController extends Controller
 
         ProductCategory::create($validated_data);
 
-        return redirect()->route('product-categories.index')->with('success', 'Category has been added.');
+        return redirect()->route('products.index')->with('success', 'Category has been added.');
     }
 
     public function edit(Request $request, ProductCategory $product_category)
