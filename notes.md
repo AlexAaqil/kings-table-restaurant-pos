@@ -35,6 +35,7 @@
 
 
 # DB Design
+```
 users {
     $table->id();
     $table->string('first_name');
@@ -171,52 +172,55 @@ settings {
     $table->string('currency')->default('KES');
     $table->json('commission_tiers')->nullable();
 }
+```
 
 
 
 # Constants
+```
 USERLEVELS = [
     0 => 'super_admin',
     1 => 'admin',
     2 => 'cashier',
-    3 => 'customer',
+    3 => 'customer'
 ];
 
 SHIFTSTATUS = [
     'active',
     'closed',
-    'paused',
+    'paused'
 ];
 
 SALESTYPE = [
     0 => 'walk-in',
-    1 => 'online',
+    1 => 'online'
 ];
 
 SALESSTATUSTYPE = [
     0 => 'pending',
     1 => 'completed',
     2 => 'canceled',
-    3 => 'refund',
+    3 => 'refund'
 ];
 
 PAYMENTMETHODS = [
     'cash',
     'mpesa',
     'card',
-    'bank_transfer',
+    'bank_transfer'
 ];
 
 PAYMENTSTATUSTYPE = [
     'pending',
     'confirmed',
     'failed',
-    'reversed',
+    'reversed'
 ];
 
 STOCKMOVEMENTYPE = [
     'purchase', 
     'sale', 
     'restock', 
-    'adjustment',
+    'adjustment'
 ];
+```
