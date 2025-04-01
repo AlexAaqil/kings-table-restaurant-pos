@@ -1,6 +1,6 @@
-# Laravel Blade Template
+# Kings Table Restaurant POS
 
-A blue-print for laravel blade projects with an admin dashboard and authentication.
+A POS for Kings Table Restaurant.
 
 ## Installation
 1. Clone the Repository
