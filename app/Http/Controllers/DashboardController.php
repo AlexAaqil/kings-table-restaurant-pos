@@ -68,7 +68,7 @@ class DashboardController extends Controller
         $change_this_month = $this->calculatePercentageChange($sales_last_month, $sales_this_month);
 
         // Cashier-specific sales filtering
-        $cashier_sales_query = Sale::where('user_id', $user->id);
+        $cashier_sales_query = Sale::where('created_by', $user->id);
 
         // Cashier sales counts
         $count_cashier_total_sales = $cashier_sales_query->count();
