@@ -53,7 +53,7 @@ class ProductController extends Controller
             'product_measurement' => 'nullable|numeric',
             'measurement_id' => 'nullable|numeric',
             'product_order' => 'nullable|numeric',
-            'images' => 'max:2048',
+            // 'images' => 'max:2048',
             'description' => 'nullable',
         ]);
 
@@ -117,7 +117,6 @@ class ProductController extends Controller
         ]);
     
         $validated_data['slug'] = Str::slug($validated_data['name']);
-        $validated_data['featured'] = $request->featured;
         $validated_data['is_visible'] = $request->is_visible;
     
         $images = $request->file('images') ?? []; // Ensure `$images` is an array
