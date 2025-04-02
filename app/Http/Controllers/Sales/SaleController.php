@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
 use App\Models\Sales\Sale;
+use App\Models\User;
 use App\Models\Sales\SaleItem;
 use App\Models\Products\Product;
 use Illuminate\Http\Request;
@@ -15,14 +16,31 @@ use Carbon\Carbon;
 
 class SaleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $sales = Sale::with('items', 'user')
-            ->latest()
-            ->get();
-        $count_sales = $sales->count();
+        $query = Sale::with('items', 'user')->latest();
 
-        return view('admin.sales.index', compact('count_sales', 'sales'));
+        // TODO - change user_id to created_by
+        if ($request->has('cashier') && $request->cashier != '') {
+            $query->where('user_id', $request->cashier);
+        }
+
+        if ($request->has('date') && $request->date != '') {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        if ($request->has('time_start') && $request->has('time_end')) {
+            $query->whereBetween('created_at', [
+                $request->date . ' ' . $request->time_start,
+                $request->date . ' ' . $request->time_end
+            ]);
+        }
+
+        $sales = $query->get();
+        $count_sales = $sales->count();
+        $cashiers = User::where('user_level', 2)->get(); // Get all cashiers
+
+        return view('admin.sales.index', compact('count_sales', 'sales', 'cashiers'));
     }
 
     public function store(Request $request)
@@ -32,23 +50,23 @@ class SaleController extends Controller
             'items.*.id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
             'total_amount' => 'required|numeric|min:0',
-            'amount_paid' => 'required|numeric|min:0',
-            'payment_method' => 'required|string|in:cash,mpesa,card',
+            // 'amount_paid' => 'nullable|numeric|min:0',
+            // 'payment_method' => 'nullable|string|in:cash,mpesa,card',
         ]);
 
         return DB::transaction(function () use ($request) {
             $orderNumber = 'POS-' . Carbon::now()->format('dmY') . '-' . Str::upper(Str::random(4));
+            $amount_paid = 0;
 
             // Create a new sale
             $sale = Sale::create([
-                'order_number' => $orderNumber,
-                'order_type' => true,  // Can be modified if needed
+                'sale_reference' => $orderNumber,
+                'sale_type' => 0,  // Can be modified if needed
                 'discount_code' => $request->discount_code ?? null,
                 'discount' => $request->discount ?? 0.00,
                 'total_amount' => $request->total_amount,
-                'amount_paid' => $request->amount_paid,
-                'payment_method' => $request->payment_method,
-                'user_id' => Auth::user()->id,
+                'amount_paid' => $amount_paid,
+                'created_by' => Auth::user()->id,
             ]);
 
             // Save sale items
@@ -56,12 +74,12 @@ class SaleController extends Controller
                 $product = Product::findOrFail($item['id']);
 
                 SaleItem::create([
-                    'order_id' => $sale->id,
-                    'product_id' => $product->id,
                     'title' => $product->name,
                     'quantity' => $item['quantity'],
                     'buying_price' => $product->buying_price,
                     'selling_price' => $product->getEffectivePrice(),
+                    'sale_id' => $sale->id,
+                    'product_id' => $product->id,
                 ]);
             }
 
@@ -93,21 +111,61 @@ class SaleController extends Controller
     public function update(Request $request, Sale $sale)
     {
         $validated = $request->validate([
-            'amount_paid' => 'required|numeric|min:0',
+            'payment_method' => 'required|string',
+            'amount_paid' => 'nullable|numeric|min:0',
+            'transaction_reference' => 'nullable|string',
+            'customer_name' => 'nullable|string',
         ]);
 
-        $amount_paid = $validated['amount_paid'];
+        $amount_paid = $validated['amount_paid'] ?? 0;
+        $payment_method = $validated['payment_method'];
+
+        // If electronic payment, validate and fetch transaction details
+        if ($payment_method !== 'cash') {
+            $query = \App\Models\Sales\SalePayment::query();
+
+            if (!empty($validated['transaction_reference'])) {
+                $query->where('transaction_reference', $validated['transaction_reference']);
+            }
+            if (!empty($validated['customer_name'])) {
+                $query->where('customer_name', 'LIKE', '%' . $validated['customer_name'] . '%');
+            }
+            if (!empty($validated['amount_paid'])) {
+                $query->where('amount_paid', $validated['amount_paid']);
+            }
+
+            $payment = $query->latest()->first();
+
+            if ($payment) {
+                $amount_paid = $payment->amount_paid;
+            } else {
+                return redirect()->back()->with('error', 'Payment not found. Please check the details and try again.');
+            }
+        }
+
+        // Update or create sale payment details
+        $sale->sale_payments()->updateOrCreate(
+            ['sale_id' => $sale->id],
+            [
+                'amount_paid' => $amount_paid,
+                'payment_method' => $payment_method,
+                'transaction_reference' => $validated['transaction_reference'] ?? null,
+            ]
+        );
 
         // Update sale details
         $sale->update([
             'amount_paid' => $amount_paid,
-            'payment_method' => $validated['payment_method'],
         ]);
 
-        // Update delivery details
-        $sale->delivery()->update([
-            'delivery_status' => $validated['delivery_status'],
-        ]);
+        // Determine payment status
+        // if ($amount_paid == $sale->total_amount) {
+        //     $sale->update(['payment_status' => 'Paid']);
+        // } elseif ($amount_paid > $sale->total_amount) {
+        //     $sale->update(['payment_status' => 'Overpaid']);
+        // } else {
+        //     $sale->update(['payment_status' => 'Underpaid']);
+        // }
 
         return redirect()->back()->with('success', 'Sale details updated successfully.');
     }
@@ -204,7 +262,6 @@ class SaleController extends Controller
         }
     }
 
-
     public function checkoutSuccess()
     {
         $order_number = session('order_number');
@@ -216,9 +273,9 @@ class SaleController extends Controller
     {
         $user = Auth::id();
 
-        $sales = Sale::where('user_id', $user)->latest()->get();
+        $sales = Sale::where('created_by', $user)->latest()->get();
         $count_sales = $sales->count();
-        $count_sales_today = Sale::where('user_id', $user)
+        $count_sales_today = Sale::where('created_by', $user)
             ->whereDate('created_at', Carbon::today())
             ->count();
 

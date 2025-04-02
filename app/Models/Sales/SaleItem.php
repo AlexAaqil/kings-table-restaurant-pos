@@ -7,14 +7,7 @@ use App\Models\Products\Product;
 
 class SaleItem extends Model
 {
-    protected $fillable = [
-        'order_id',
-        'product_id',
-        'title',
-        'quantity',
-        'buying_price',
-        'selling_price',
-    ];
+    protected $guarded = [];
 
     public function sale()
     {

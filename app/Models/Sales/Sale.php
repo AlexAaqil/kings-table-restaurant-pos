@@ -7,30 +7,37 @@ use App\Models\User;
 
 class Sale extends Model
 {
-    protected $fillable = [
-        'order_number',
-        'order_type',
-        'discount_code',
-        'discount',
-        'total_amount',
-        'amount_paid',
-        'payment_method',
-        'user_id',
+    protected $guarded = [];
+
+    const SALESTYPE = [
+        0 => 'pos',
+        1 => 'online'
     ];
 
-    const PAYMENTMETHODS = [
-        'cash',
-        'mpesa',
-        'card',
+    const SALESSTATUSTYPE = [
+        0 => 'pending',
+        1 => 'completed',
+        2 => 'canceled',
+        3 => 'refund'
     ];
 
     public function items()
     {
-        return $this->hasMany(SaleItem::class, 'order_id');
+        return $this->hasMany(SaleItem::class, 'sale_id');
+    }
+
+    public function sale_payments()
+    {
+        return $this->hasMany(SalePayment::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 }
