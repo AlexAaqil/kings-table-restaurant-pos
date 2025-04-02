@@ -81,6 +81,7 @@ products {
     $table->unsignedSmallInteger('product_ordering')->default(200);
     $table->unsignedSmallInteger('stock_count')->default(0);
     $table->unsignedSmallInteger('safety_stock')->default(0);
+    $table->text('description')->nullable();
 
     $table->foreignId('category_id')->nullable()->constrained('product_categories')->onDelete('set null');
     $table->timestamps();
@@ -108,9 +109,9 @@ stock_movements {
 
 sales {
     $table->id();
-    $table->string('order_number')->unique();
-    $table->unsignedTinyInteger('order_type')->default(0);
-    $table->unsignedTinyInteger('status')->default(0);
+    $table->string('sale_reference')->unique();
+    $table->unsignedTinyInteger('sale_type')->default(0);
+    $table->unsignedTinyInteger('sale_status')->default(0);
     $table->string('discount_code')->nullable();
     $table->decimal('discount',10,2)->default(0.00);
     $table->decimal('total_amount', 10,2)->default(0.00);
@@ -122,7 +123,7 @@ sales {
     $table->timestamps();
 }
 
-sales_items {
+sale_items {
     $table->id();
     $table->string('title');
     $table->unsignedSmallInteger('quantity')->default(1);
@@ -171,6 +172,8 @@ settings {
     $table->string('email');
     $table->string('currency')->default('KES');
     $table->json('commission_tiers')->nullable();
+    $table->string('logo')->nullable();
+    $table->timestamps();
 }
 ```
 
@@ -188,7 +191,6 @@ USERLEVELS = [
 SHIFTSTATUS = [
     'active',
     'closed',
-    'paused'
 ];
 
 SALESTYPE = [
