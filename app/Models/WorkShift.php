@@ -13,6 +13,11 @@ class WorkShift extends Model
         'shift_end' => 'datetime',
     ];
 
+    const SHIFTSTATUS = [
+        'active',
+        'closed',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

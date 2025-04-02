@@ -1,6 +1,12 @@
 <x-authenticated-layout>
     <x-slot name="head">
         <title>Sale | Update</title>
+
+        <style>
+            .hidden {
+                display: none;
+            }
+        </style>
     </x-slot>
 
     <section class="Sales">
@@ -21,11 +27,11 @@
                 <div class="order_details row_container">
                     <div class="details">
                         <p class="text-success">
-                            <span>Order_number</span>
-                            <span>{{ $sale->order_number ?? '-' }}</span>
+                            <span>Order_number: </span>
+                            <span>{{ $sale->sale_reference ?? '-' }}</span>
                         </p>
                         <p>
-                            <span>Order Date</span>
+                            <span>Date: </span>
                             <span>{{ $sale->created_at?->format('d M Y \a\t h:i A') ?? '-' }}</span>
                         </p>
                     </div>
@@ -70,18 +76,32 @@
                     <div class="inputs">
                         <label for="payment_method">Payment Method</label>
                         <div class="custom_radio_buttons">
-                            @foreach(App\Models\Sales\Sale::PAYMENTMETHODS as $method)
+                            @foreach(App\Models\Sales\SalePayment::PAYMENTMETHODS as $method)
                                 <label>
-                                    <input class="option_radio" 
+                                    <input class="option_radio payment-method" 
                                         type="radio" 
                                         name="payment_method" 
                                         value="{{ $method }}"
-                                        {{ old('payment_method', $sale->payment_method) == $method ? 'checked' : '' }}>
+                                        {{ old('payment_method', $sale->sale_payment->payment_method ?? '') == $method ? 'checked' : '' }}>
                                     <span>{{ ucfirst($method) }}</span>
                                 </label>
                             @endforeach
                         </div>
                         <x-input-error field="payment_method" />
+                    </div>
+
+                    <div id="electronic-payment-fields" class="hidden">
+                        <div class="inputs">
+                            <label for="transaction_reference">Transaction Reference</label>
+                            <input type="text" name="transaction_reference" id="transaction_reference" 
+                                value="{{ old('transaction_reference', $sale->sale_payment->transaction_reference ?? '') }}">
+                        </div>
+
+                        <div class="inputs">
+                            <label for="customer_name">Customer Name</label>
+                            <input type="text" name="customer_name" id="customer_name" 
+                                value="{{ old('customer_name', $sale->sale_payment->customer_name ?? '') }}">
+                        </div>
                     </div>
 
                     <div class="inputs">
@@ -91,9 +111,7 @@
                 </div>
 
                 <div class="buttons">
-                    @can('view-as-admin')
-                        <button type="submit">Update Sale</button>
-                    @endcan
+                    <button type="submit">Update Sale</button>
 
                     <a href="{{ route('sales.receipt', $sale) }}" class="btn_link">Print Receipt</a>
 
@@ -119,5 +137,28 @@
 
     <x-slot name="scripts">
         <x-sweetalert />
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                let paymentMethods = document.querySelectorAll('.payment-method');
+                let electronicFields = document.getElementById('electronic-payment-fields');
+
+                function toggleFields() {
+                    let selectedMethod = document.querySelector('.payment-method:checked')?.value;
+                    if (selectedMethod && selectedMethod !== 'cash') {
+                        electronicFields.classList.remove('hidden');
+                    } else {
+                        electronicFields.classList.add('hidden');
+                    }
+                }
+
+                paymentMethods.forEach(method => {
+                    method.addEventListener('change', toggleFields);
+                });
+
+                // Run on page load to set correct visibility
+                toggleFields();
+            });
+        </script>
     </x-slot>
 </x-authenticated-layout>

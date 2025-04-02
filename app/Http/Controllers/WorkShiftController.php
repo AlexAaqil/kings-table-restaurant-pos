@@ -37,8 +37,7 @@ class WorkShiftController extends Controller
             return redirect()->back()->with('error', 'No active shift found.');
         }
 
-        // TODO: change user_id to created_by after restructuring the sales table.
-	    $total_sales = Sale::where('user_id', $user->id)
+	    $total_sales = Sale::where('created_by', $user->id)
 	        ->where('created_at', '>=', $shift->shift_start)
 	        ->where('created_at', '<=', now())
 	        ->sum('total_amount');

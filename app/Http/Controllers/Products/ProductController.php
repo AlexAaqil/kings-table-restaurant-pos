@@ -284,6 +284,6 @@ class ProductController extends Controller
 
         $count_products = $categories->sum('products_count');
 
-        return view('shop', compact('categories', 'count_products'));
+        return view('sales.shop', compact('categories', 'count_products'));
     }
 }

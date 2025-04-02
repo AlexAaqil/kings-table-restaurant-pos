@@ -45,6 +45,26 @@
 
                 <div class="input_group_3">
                     <div class="inputs">
+                        <label for="buying_price">Buying Price</label>
+                        <input type="number" step="0.01" name="buying_price" id="buying_price" value="{{ old('buying_price', 0.00) }}" placeholder="Enter the Buying Price eg. 500.00" />
+                        <x-input-error field="buying_price" />
+                    </div>
+
+                    <div class="inputs">
+                        <label for="selling_price">Selling Price</label>
+                        <input type="number" step="0.01" name="selling_price" id="selling_price" value="{{ old('selling_price', 0.00) }}" placeholder="Enter the Selling Price eg. 700.00." />
+                        <x-input-error field="selling_price" />
+                    </div>
+
+                    <div class="inputs">
+                        <label for="discount_price">New Price (After Discount)</label>
+                        <input type="number" step="0.01" name="discount_price" id="discount_price" value="{{ old('discount_price', 0.00) }}" placeholder="Enter the discount_price." />
+                        <x-input-error field="discount_price" />
+                    </div>
+                </div>
+
+                <div class="input_group_3">
+                    <div class="inputs">
                         <label for="is_visible">Is Visible?</label>
                         <div class="custom_radio_buttons">
                             <label>
@@ -70,26 +90,6 @@
                         <label for="safety_stock">Safety Stock</label>
                         <input type="number" name="safety_stock" id="safety_stock" placeholder="Safety Stock" value="{{ old('safety_stock', 1) }}" />
                         <x-input-error field="safety_stock" />
-                    </div>
-                </div>
-
-                <div class="input_group_3">
-                    <div class="inputs">
-                        <label for="buying_price">Buying Price</label>
-                        <input type="number" step="0.01" name="buying_price" id="buying_price" value="{{ old('buying_price', 0.00) }}" placeholder="Enter the Buying Price eg. 500.00" />
-                        <x-input-error field="buying_price" />
-                    </div>
-
-                    <div class="inputs">
-                        <label for="selling_price">Selling Price</label>
-                        <input type="number" step="0.01" name="selling_price" id="selling_price" value="{{ old('selling_price', 0.00) }}" placeholder="Enter the Selling Price eg. 700.00." />
-                        <x-input-error field="selling_price" />
-                    </div>
-
-                    <div class="inputs">
-                        <label for="discount_price">New Price (After Discount)</label>
-                        <input type="number" step="0.01" name="discount_price" id="discount_price" value="{{ old('discount_price', 0.00) }}" placeholder="Enter the discount_price." />
-                        <x-input-error field="discount_price" />
                     </div>
                 </div>
 

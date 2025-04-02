@@ -71,28 +71,7 @@
                     <div class="cart_footer">
                         <p><b>Total: Ksh. <span id="cartTotal">0.00</span></b></p>
 
-                        <div class="inputs">
-                            <div class="input">
-                                <label>Amount Paid:</label>
-                                <input type="number" id="amountPaid" placeholder="Enter amount paid">
-                            </div>
-                        
-                            <div class="input">
-                                <label>Payment Method:</label>
-                                <select id="paymentMethod">
-                                    <option value="cash">Cash</option>
-                                    <option value="mpesa">M-Pesa</option>
-                                    <option value="card">Card</option>
-                                </select>
-                            </div>
-
-                            <div class="input">
-                                <label>Change Given:</label>
-                                <input type="text" id="changeGiven" readonly>
-                            </div>
-                        </div>
-
-                        <button id="checkoutButton">Checkout</button>
+                        <button id="generateOrderButton">Generate Order</button>
                     </div>
                 </div>
             </div>
@@ -137,14 +116,6 @@
                     updateChangeGiven();
                 }
 
-                function updateChangeGiven() {
-                    let amountPaid = parseFloat(document.getElementById("amountPaid").value) || 0;
-                    let total = parseFloat(document.getElementById("cartTotal").innerText) || 0;
-                    let change = (amountPaid - total).toFixed(2);
-
-                    document.getElementById("changeGiven").value = change >= 0 ? change : "Insufficient amount";
-                }
-
                 // Add products to cart
                 document.querySelectorAll(".card").forEach(product => {
                     product.addEventListener("click", function () {
@@ -184,43 +155,18 @@
                     updateCartUI();
                 });
 
-                // Handle amount paid input and change given
-                document.getElementById("amountPaid").addEventListener("input", updateChangeGiven);
-
-                // Handle checkout
-                document.getElementById("checkoutButton").addEventListener("click", function () {
-                    let enteredAmount = parseFloat(document.getElementById("amountPaid").value);
-                    let total = parseFloat(document.getElementById("cartTotal").innerText);
-                    let paymentMethod = document.getElementById("paymentMethod").value;
-
+                document.getElementById("generateOrderButton").addEventListener("click", function () {
                     if (Object.keys(cart).length === 0) {
                         alert("Cart is empty!");
                         return;
                     }
 
-                    if (!enteredAmount || enteredAmount < total) {
-                        alert("Amount paid is less than the total cost!");
-                        return;
-                    }
-
-                    // Ask for confirmation on the actual amount paid
-                    let confirmedAmount = prompt(`Confirm the actual amount paid (Total: Ksh. ${total.toFixed(2)}):`, enteredAmount);
-                    
-                    if (!confirmedAmount || isNaN(confirmedAmount) || parseFloat(confirmedAmount) < total) {
-                        alert("Invalid or insufficient amount entered. Please enter the correct amount.");
-                        return;
-                    }
-
-                    confirmedAmount = parseFloat(confirmedAmount);
-
                     let saleData = {
                         items: Object.values(cart),
-                        total_amount: total,
-                        amount_paid: confirmedAmount,
-                        payment_method: paymentMethod
+                        total_amount: parseFloat(document.getElementById("cartTotal").innerText),
                     };
 
-                    fetch("{{ route('sales.store') }}", {
+                    fetch("/sales/store", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -230,20 +176,12 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        alert("Sale completed successfully! Change Given: Ksh. " + data.change);
-
-                        // Clear cart and fields
-                        cart = {};
-                        updateCartUI();
-                        document.getElementById("amountPaid").value = "";
-                        document.getElementById("changeGiven").value = "";
-                        
-                        // Redirect to receipt page
+                        alert("Order receipt generated!");
                         window.location.href = `/receipt/${data.sale_id}`;
                     })
                     .catch(error => {
                         console.error("Error:", error);
-                        alert("Sale failed!");
+                        alert("Failed to generate order receipt!");
                     });
                 });
             });

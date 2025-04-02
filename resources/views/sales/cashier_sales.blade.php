@@ -24,6 +24,7 @@
                             <tr>
                                 <th class="center">#</th>
                                 <th>Order</th>
+                                <th>Order Items</th>
                                 <th>Amount</th>
                                 <th class="center">Payment</th>
                                 <th class="actions center">Actions</th>
@@ -34,7 +35,8 @@
                             @foreach ($sales as $sale)
                                 <tr class="searchable">
                                     <td class="center">{{ $loop->iteration }}</td>
-                                    <td>{{ $sale->order_number }}</td>
+                                    <td>{{ $sale->sale_reference }}</td>
+                                    <td>{{ implode(', ', $sale->items->pluck('title')->toArray()) }}</td>
                                     <td>{{ $sale->total_amount ?? '-' }}</td>
                                     <td class="center">
                                         @if($sale->amount_paid >= $sale->total_amount)
@@ -56,7 +58,7 @@
                     </table>
                 </div>
             @else
-                <p>No users yet.</p>
+                <p>No sales yet.</p>
             @endif
         </div>
     </section>
