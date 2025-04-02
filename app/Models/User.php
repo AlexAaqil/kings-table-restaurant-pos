@@ -85,4 +85,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return self::USERLEVELS[$this->user_level] ?? 'unknown level';
     }
+
+    public function work_shifts()
+    {
+        return $this->hasMany(WorkShift::class, 'user_id');
+    }
 }

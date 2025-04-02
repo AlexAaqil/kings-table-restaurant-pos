@@ -1,4 +1,8 @@
 <section class="AdminDashboard">
+    <div class="section hero">
+        <p class="title">Hi, {{ Auth::user()->full_name }}</p>
+    </div>
+
     <div class="section stats">
         <div class="stat">
             <div class="text">
@@ -100,6 +104,24 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="section cashiers_summary">
+        @foreach ($cashiers_sales as $cashier)
+            @if ($cashier->work_shifts->isNotEmpty()) 
+                @php
+                    $latest_shift = $cashier->work_shifts->first();
+                @endphp
+                <div class="cashier">
+                    <p class="title">{{ $cashier->full_name }}</p>
+                    <p class="sales">Ksh {{ number_format($latest_shift->total_sales_amount, 2) }}</p>
+                    <p class="time">
+                        {{ \Carbon\Carbon::parse($latest_shift->shift_start)->format('h:i A') }} - 
+                        {{ $latest_shift->shift_end ? \Carbon\Carbon::parse($latest_shift->shift_end)->format('h:i A') : 'Ongoing' }}
+                    </p>
+                </div>
+            @endif
+        @endforeach
     </div>
 
     <x-slot name="scripts">

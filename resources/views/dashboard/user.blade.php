@@ -1,4 +1,20 @@
 <section class="UserDashboard">
+    <div class="section hero">
+        <p class="title">Hi, {{ Auth::user()->full_name }}</p>
+         @if ($active_shift)
+            <p>Shift started at: {{ $active_shift->shift_start->format('d-m-Y h:i A') }}</p>
+            <form action="{{ route('work-shift.end') }}" method="post">
+                @csrf
+                <button type="submit" class="btn btn-danger">End Shift</button>
+            </form>
+        @else
+            <form action="{{ route('work-shift.start') }}" method="post">
+                @csrf
+                <button type="submit" class="btn btn-success">Start Shift</button>
+            </form>
+        @endif
+    </div>
+
     <div class="section stats">
         <div class="stat">
             <div class="text">

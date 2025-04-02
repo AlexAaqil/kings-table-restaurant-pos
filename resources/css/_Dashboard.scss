@@ -3,6 +3,19 @@
         margin: 0 0 0.8em;
     }
 
+    .hero {
+        display: grid;
+        gap: 0.4em;
+
+        .title {
+            font-size: 1.2em;
+        }
+
+        form {
+            margin: 0.4em 0 0;
+        }
+    }
+
     .stats {
         display: grid;
         grid-template-columns: 1fr;
@@ -68,6 +81,17 @@
             }
         }
     }
+
+    .cashiers_summary {
+        display: grid;
+        gap: 2em;
+
+        .cashier {
+            outline: 1px solid $faded_line;
+            padding: 12px;
+            border-radius: 8px;
+        }
+    }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
@@ -78,6 +102,10 @@
 
         .charts {
             grid-template-columns: 3fr 1fr;
+        }
+
+        .cashiers_summary {
+            grid-template-columns: repeat(3, 1fr);
         }
     }
 }
@@ -90,6 +118,10 @@
 
         .charts {
             grid-template-columns: 4fr 2fr;
+        }
+
+        .cashiers_summary {
+            grid-template-columns: repeat(6, 1fr);
         }
     }
 }

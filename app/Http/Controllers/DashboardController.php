@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\WorkShift;
 use App\Models\Products\Product;
 use App\Models\Products\ProductCategory;
 use App\Models\Sales\Sale;
@@ -18,6 +19,20 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+
+        $today = Carbon::today();
+        $is_cashier = $user->user_level_label === 'cashier';
+        $active_shift = $is_cashier ? WorkShift::where('user_id', $user->id)->where('status', 'active')->first() : null;
+        $cashiers_sales = User::where('user_level', 2)
+            ->with(['work_shifts' => function ($query) use ($today) {
+                $query->whereDate('shift_start', $today)
+                    ->orderBy('shift_start', 'desc');
+            }])
+                ->orderByDesc(WorkShift::select('shift_start')
+                ->whereColumn('user_id', 'users.id')
+                ->latest()
+                ->take(1)
+            )->get();
 
         // General user statistics
         $count_users = User::whereNotIn('user_level', [0, 1])
@@ -117,6 +132,8 @@ class DashboardController extends Controller
 
         return view('dashboard.index', compact(
             'user',
+            'active_shift',
+            'cashiers_sales',
             'count_users',
             'count_admins',
             'count_cashiers',

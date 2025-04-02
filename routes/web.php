@@ -9,6 +9,7 @@ use App\Http\Controllers\Products\ProductCategoryController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Sales\SaleController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\WorkShiftController;
 
 Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::view('/contact', 'contact')->name('contact-page');
@@ -16,6 +17,9 @@ Route::post('/contact', [MessageController::class, 'store'])->name('messages.sto
 
 Route::middleware(['auth', 'verified', 'active'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::post('/work-shift/start', [WorkShiftController::class, 'start'])->name('work-shift.start');
+    Route::post('/work-shift/end', [WorkShiftController::class, 'end'])->name('work-shift.end');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
