@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
             $table->string('image');
-            $table->smallInteger('image_order')->default(5);
+            $table->smallInteger('image_ordering')->default(5);
 
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->timestamps();

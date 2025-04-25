@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class ProductController extends Controller
 {
@@ -28,7 +29,12 @@ class ProductController extends Controller
         $count_visible_products = $categories->sum('visible_products_count');
         $count_categories = $categories->count();
 
-        return view('admin.products.products.index', compact('categories', 'count_products', 'count_visible_products', 'count_categories'));
+        return view('admin.products.products.index', compact(
+            'categories', 
+            'count_products', 
+            'count_visible_products', 
+            'count_categories'
+        ));
     }
 
     public function create(Request $request)
@@ -41,217 +47,138 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $validated_data = $request->validate([
-            'name'=> 'required|string|max:120|unique:products,name',
-            'product_code' => 'nullable|numeric',
-            'category_id' => 'nullable',
-            'stock_count' => 'numeric',
-            'safety_stock' => 'numeric',
-            'buying_price' => 'numeric',
-            'selling_price' => 'numeric',
-            'discount_price' => 'numeric',
-            'product_measurement' => 'nullable|numeric',
-            'measurement_id' => 'nullable|numeric',
-            'product_order' => 'nullable|numeric',
-            // 'images' => 'max:2048',
-            'description' => 'nullable',
-        ]);
-
+        $validated_data = $this->validateProductData($request);
         $validated_data['slug'] = Str::slug($validated_data['name']);
-        $validated_data['is_visible'] = $request->is_visible;
+        $validated_data['is_visible'] = $request->has('is_visible');
 
-        $images = $request->file('images');
+        $images = $request->file('images', []);
 
-        if($images && count($images) > 5) {
-            return redirect()->back()->withErrors(['images' => 'You can only upload a max of 5 images.']);
+        if (count($images) > self::MAX_IMAGES_PER_PRODUCT) {
+            return redirect()->back()
+                ->withErrors(['images' => 'You can only upload up to ' . self::MAX_IMAGES_PER_PRODUCT . ' images.'])
+                ->withInput();
         }
 
-        return DB::transaction(function () use ($validated_data, $request, $images) {
+        DB::beginTransaction();
+
+        try {
             $product = Product::create($validated_data);
             
-            if($images) {
+            if (!empty($images)) {
                 $this->storeProductImages($images, $product);
             }
 
-            return redirect()->route('products.index')->with('success', 'Product has been added.');
-        });
+            DB::commit();
+
+            return redirect()->route('products.index')
+                ->with('success', 'Product has been added.');
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect()->back()
+                ->with('error', 'Failed to create product: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     public function show($slug)
     {
-        $product = Product::with('images', 'category')->where([
-            ['is_visible', 1],
-            ['slug', $slug],
-        ])->firstOrFail();
+        $product = Product::with('images', 'category')
+            ->where([
+                ['is_visible', 1],
+                ['slug', $slug],
+            ])->firstOrFail();
+
         $related_products = Product::where('category_id', $product->category_id)
-        ->where('id', '!=', $product->id)
-        ->take(5)
-        ->get();
+            ->where('id', '!=', $product->id)
+            ->take(5)
+            ->get();
+
         return view('shop.product-details', compact('product', 'related_products'));
     }
 
     public function edit(Product $product)
     {
         $categories = ProductCategory::orderBy('name')->get();
-        $product_images = $product->getProductImages;
+        $product_images = $product->images()->orderBy('image_order')->get();
 
-        return view('admin.products.products.edit', compact('categories', 'product', 'product_images'));
+        return view('admin.products.products.edit', compact(
+            'categories', 
+            'product', 
+            'product_images'
+        ));
     }
 
     public function update(Request $request, Product $product)
     {
-        $validated_data = $request->validate([
-            'name'=> 'required|string|max:120|unique:products,name,' . $product->id,
-            'product_code' => 'numeric',
-            'category_id' => 'nullable',
-            'stock_count' => 'numeric',
-            'safety_stock' => 'numeric',
-            'buying_price' => 'numeric',
-            'selling_price' => 'numeric',
-            'discount_price' => 'numeric',
-            'product_measurement' => 'nullable|numeric',
-            'measurement_id' => 'nullable|numeric',
-            'product_order' => 'nullable|numeric',
-            'images.*' => 'image|max:2048',
-            'description' => 'nullable',
-        ]);
-    
+        $validated_data = $this->validateProductData($request, $product);
         $validated_data['slug'] = Str::slug($validated_data['name']);
-        $validated_data['is_visible'] = $request->is_visible;
-    
-        $images = $request->file('images') ?? []; // Ensure `$images` is an array
+        $validated_data['is_visible'] = $request->has('is_visible');
 
-        if ($images) {
-            $existing_images_count = $product->images()->count();
-            $new_images_count = is_array($images) ? count($images) : 0;
+        $images = $request->file('images', []);
+        $current_image_count = $product->images()->count();
 
-            if ($existing_images_count + $new_images_count > 5) {
-                return redirect()->route('products.edit', $product->id)
-                    ->withErrors(['images' => 'You can only upload a maximum of five images.'])
-                    ->withInput();
-            }
+        if (($current_image_count + count($images)) > self::MAX_IMAGES_PER_PRODUCT) {
+            return redirect()->route('products.edit', $product->id)
+                ->withErrors(['images' => 'You can only have a maximum of ' . self::MAX_IMAGES_PER_PRODUCT . ' images per product.'])
+                ->withInput();
         }
-    
-        return DB::transaction(function () use ($validated_data, $product, $images) {
+
+        DB::beginTransaction();
+
+        try {
             $product->update($validated_data);
-            $this->updateProductImages($images, $product);
-    
-            return redirect()->route('products.index')->with('success', 'Product has been updated.');
-        });
-    }       
+
+            if (!empty($images)) {
+                $this->storeProductImages($images, $product);
+            }
+
+            DB::commit();
+
+            return redirect()->route('products.index')
+                ->with('success', 'Product has been updated.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->with('error', 'Failed to update product: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
 
     public function destroy(Product $product)
     {
-        return DB::transaction(function () use ($product) {
+        DB::beginTransaction();
+
+        try {
             $image_paths = $product->images->pluck('image')->toArray();
 
             $product->images()->delete();
             $product->delete();
 
+            // Delete images from storage
             foreach ($image_paths as $image_path) {
                 Storage::disk('public')->delete($image_path);
             }
 
-            return redirect()->route('products.index')->with('success', 'Product has been deleted.');
-        });
-    }
+            DB::commit();
 
-    private function storeProductImages($images, Product $product)
-    {
-       foreach ($images as $image) {
-            $filename = $this->generateImageFilename($image, $product->name, $product->id);
-            $image_path = $image->storeAs('products', $filename, 'public');
-
-            ProductImage::create([
-                'image' => $image_path,
-                'product_id' => $product->id,
-            ]);
+            return redirect()->route('products.index')
+                ->with('success', 'Product has been deleted.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->with('error', 'Failed to delete product: ' . $e->getMessage());
         }
-    }
-    
-    private function updateProductImages($images, Product $product)
-    {
-        foreach ($product->images as $image) {
-            $oldPath = $image->image;
-            $newFilename = $this->generateImageFilenameFromPath($oldPath, $product->name, $product->id);
-            $newPath = 'products/' . $newFilename;
-
-            if (Storage::disk('public')->exists($oldPath)) {
-                Storage::disk('public')->move($oldPath, $newPath);
-            }
-
-            $image->update(['image' => $newPath]);
-        }
-
-        $existing_images_count = $product->images()->count();
-        $new_images_count = is_array($images) ? count($images) : 0;
-
-        if ($existing_images_count + $new_images_count > 5) {
-            return redirect()->route('products.edit', $product->id)
-                ->withErrors(['images' => 'You can only upload a maximum of five images.'])
-                ->withInput();
-        }
-
-        if (!empty($images)) {
-            $this->storeProductImages($images, $product);
-        }
-    }
-
-    private function generateImageFilenameFromPath($oldPath, $newTitle, $productId)
-    {
-        $extension = pathinfo($oldPath, PATHINFO_EXTENSION);
-        $slug = Str::slug($newTitle);
-        $app_name = Str::slug(config("globals.app_name"));
-
-        return "{$app_name}-{$slug}-{$productId}-" . uniqid() . ".{$extension}";
-    }
-
-    private function generateImageFilename($image, $title, $productId)
-    {
-        $extension = $image->getClientOriginalExtension();
-        $slug = Str::slug($title);
-        $app_name = Str::slug(config("globals.app_name"));
-        return "{$app_name}-{$slug}-{$productId}-" . uniqid() . ".$extension";
-    }
-
-    public function deleteProductImage($id) {
-        $image = ProductImage::find($id);
-
-        $image->delete();
-
-        Storage::disk('public')->delete($image->image);
-
-        return redirect()->route('products.edit', $image->product_id)->with('success', 'Image has been deleted.');
-    }
-
-    public function sortProductImages(Request $request) {
-        if(!empty($request->photo_id)) {
-            $i = 1;
-            foreach($request->photo_id as $photo_id) {
-                $image = ProductImage::find($photo_id);
-                $image->image_order = $i;
-                $image->save();
-
-                $i++;
-            }
-        }
-
-        $json['success'] = true;
-        echo json_encode($json);
     }
 
     public function search(Request $request)
     {
-        $query = $request->input('query');
+        $query = $request->validate(['query' => 'required|string'])['query'];
 
         $products = Product::with('category')
-        ->where('name', 'like', "%$query%")
-        ->orWhere('description', 'like', "%$query%")
-        ->get();
-
-        foreach ($products as $product) {
-            $product->calculateDiscount();
-        }
+            ->where('name', 'like', "%$query%")
+            ->orWhere('description', 'like', "%$query%")
+            ->get()
+            ->each->calculateDiscount();
 
         return view('products.search-results', compact('products', 'query'));
     }
@@ -260,13 +187,16 @@ class ProductController extends Controller
     {
         $categories = ProductCategory::orderBy('name', 'asc')->get();
         $category = ProductCategory::where('slug', $category_slug)->firstOrFail();
-        $products = $category->products()->get();
+        
+        $products = $category->products()
+            ->get()
+            ->each->calculateDiscount();
 
-        foreach ($products as $product) {
-            $product->calculateDiscount();
-        }
-
-        return view('shop.categorized-products', compact('category', 'categories', 'products'));
+        return view('shop.categorized-products', compact(
+            'category', 
+            'categories', 
+            'products'
+        ));
     }
 
     public function shop()
@@ -277,12 +207,38 @@ class ProductController extends Controller
             }
         ])->with([
             'products' => function ($query) {
-                $query->where('is_visible', 1)->orderBy('product_order')->orderBy('name');
+                $query->where('is_visible', 1)
+                    ->orderBy('product_order')
+                    ->orderBy('name');
             }
         ])->orderBy('name')->get();
 
         $count_products = $categories->sum('products_count');
 
         return view('sales.shop', compact('categories', 'count_products'));
+    }
+
+    /**
+     * Validate product data from request
+     */
+    protected function validateProductData(Request $request, Product $product = null)
+    {
+        $rules = [
+            'name' => 'required|string|max:120|unique:products,name' . ($product ? ',' . $product->id : ''),
+            'product_code' => 'nullable|numeric',
+            'category_id' => 'nullable|exists:product_categories,id',
+            'stock_count' => 'required|numeric',
+            'safety_stock' => 'required|numeric',
+            'buying_price' => 'required|numeric',
+            'selling_price' => 'required|numeric',
+            'discount_price' => 'nullable|numeric',
+            'product_measurement' => 'nullable|numeric',
+            'measurement_id' => 'nullable|numeric',
+            'product_order' => 'nullable|numeric',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'description' => 'nullable|string',
+        ];
+
+        return $request->validate($rules);
     }
 }

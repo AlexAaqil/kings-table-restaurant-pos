@@ -95,8 +95,12 @@
 
                 <div class="inputs">
                     <label for="images">Images ({{ $product->images->count() }} / 5 Maximum allowed images)</label>
-                    <input type="file" name="images[]" id="images" accept=".png, .jpg, .jpeg" multiple />
-                    <span class="inline_alert">{{ session('error') ? session('error') : ($errors->has('images') ? $errors->first('images') : '') }}</span>
+                    <input type="file" name="images[]" id="images" accept="image/png, image/jpg, image/jpeg" multiple />
+                    @if($product->images->count() >= 5) disabled @endif>
+                    <span class="inline_alert">
+                        @error('images.*') {{ $message }} @enderror
+                        @error('images') {{ $message }} @enderror
+                    </span>
                 </div>
 
                 @if(!empty(session('success')))

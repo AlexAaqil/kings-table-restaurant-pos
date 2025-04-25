@@ -16,7 +16,7 @@ class Product extends Model
 
     public function images()
     {
-        return $this->hasMany(ProductImage::class, 'product_id')->orderBy('image_order', 'asc');
+        return $this->hasMany(ProductImage::class, 'product_id')->orderBy('image_ordering', 'asc');
     }
 
     public function getTranslatedFeatured()
