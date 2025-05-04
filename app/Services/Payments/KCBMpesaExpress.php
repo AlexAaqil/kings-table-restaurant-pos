@@ -67,7 +67,7 @@ class KCBMpesaExpress
 
             $this->logger->info('STK Payload', $payload);
 
-            $response = Http::withToken($token)->post("{$this->base_url}/mpesa/express", $payload);
+            $response = Http::withToken($token)->post("{$this->base_url}/mm/api/request/1.0.0/stkpush", $payload);
 
             $this->logger->info('STK Response', ['status' => $response->status(), 'body' => $response->body()]);
 
