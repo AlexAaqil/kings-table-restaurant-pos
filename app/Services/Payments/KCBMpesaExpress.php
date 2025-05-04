@@ -58,7 +58,7 @@ class KCBMpesaExpress
                 'phoneNumber' => $this->formatPhone($phone),
                 'amount' => $amount,
                 'invoiceNumber' => $invoice,
-                'sharedShortCode' => true,
+                'sharedShortCode' => false,
                 'orgShortCode' => $this->org_short_code,
                 'orgPassKey' => $this->org_pass_key,
                 'callbackUrl' => route('api.payment.callback'),
