@@ -127,6 +127,12 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'kcb-mpesa' => [
+            'driver' =>'single',
+            'path' => storage_path('logs/kcb-mpesa.log'),
+            'level' => 'debug',
+        ],
+
     ],
 
 ];
