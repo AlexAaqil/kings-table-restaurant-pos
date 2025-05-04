@@ -10,6 +10,7 @@ use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Sales\SaleController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\WorkShiftController;
+use App\Http\Controllers\Payments\KCBMpesaExpressController;
 
 Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::view('/contact', 'contact')->name('contact-page');
@@ -20,7 +21,7 @@ Route::middleware(['auth', 'verified', 'active'])->group(function() {
 
     Route::post('/work-shift/start', [WorkShiftController::class, 'start'])->name('work-shift.start');
     Route::post('/work-shift/end', [WorkShiftController::class, 'end'])->name('work-shift.end');
-    
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -47,3 +48,7 @@ Route::middleware(['auth', 'verified', 'active'])->group(function() {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/pay', [KCBMpesaExpressController::class, 'showForm']);
+Route::post('/pay', [KCBMpesaExpressController::class, 'initiatePayment']);
+Route::post('/api/payment/callback', [KCBMpesaExpressController::class, 'handleCallback'])->name('api.payment.callback');
