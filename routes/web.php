@@ -51,4 +51,3 @@ require __DIR__.'/auth.php';
 
 Route::get('/pay', [KCBMpesaExpressController::class, 'showForm']);
 Route::post('/pay', [KCBMpesaExpressController::class, 'initiatePayment']);
-Route::post('/api/payment/callback', [KCBMpesaExpressController::class, 'handleCallback'])->name('api.payment.callback');
