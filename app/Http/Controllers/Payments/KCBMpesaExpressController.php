@@ -34,14 +34,39 @@ class KCBMpesaExpressController extends Controller
 
     public function handleCallback(Request $request)
     {
-        Log::info('M-Pesa Callback: ', $request->all());
+        // 1. Log the raw payload for diagnostics
+        Log::channel('kcb-mpesa')->info('Raw STK Callback Payload:', $request->all());
 
-        $data = $request->input('Body.stkCallback.CallbackMetadata.Item', []);
+        // 2. Pull main callback body
+        $callback = $request->input('Body.stkCallback', []);
 
-        $parse = collect($data)->mapWithKeys(fn ($item) => [$item['Name'] => $item['value'] ?? null]);
+        // 3. Extract essential values
+        $resultCode = $callback['ResultCode'] ?? null;
+        $resultDesc = $callback['ResultDesc'] ?? null;
+        $merchantRequestId = $callback['MerchantRequestID'] ?? null;
+        $checkoutRequestId = $callback['CheckoutRequestID'] ?? null;
 
-        // Save the transaction
+        // 4. Extract metadata fields (e.g., Amount, PhoneNumber, etc.)
+        $metadata = collect($callback['CallbackMetadata']['Item'] ?? [])
+            ->mapWithKeys(fn ($item) => [$item['Name'] => $item['Value'] ?? null])
+            ->toArray();
 
-        return response()->json(['message' => 'Callback received']);
+        // 5. Merge and format data for saving or future DB persistence
+        $parsed = [
+            'ResultCode'         => $resultCode,
+            'ResultDesc'         => $resultDesc,
+            'MerchantRequestID'  => $merchantRequestId,
+            'CheckoutRequestID'  => $checkoutRequestId,
+            'Amount'             => $metadata['Amount'] ?? null,
+            'MpesaReceiptNumber' => $metadata['MpesaReceiptNumber'] ?? null,
+            'TransactionDate'    => $metadata['TransactionDate'] ?? null,
+            'PhoneNumber'        => $metadata['PhoneNumber'] ?? null,
+        ];
+
+        // 6. Log the cleaned, structured data
+        Log::channel('kcb-mpesa')->info('Parsed STK Callback:', $parsed);
+
+        // Return 200 to notify KCB that the callback was successfully received
+        return response()->json(['message' => 'Callback received'], 200);
     }
 }
