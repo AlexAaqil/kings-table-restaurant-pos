@@ -31,7 +31,9 @@ class KCBMpesaExpress
 
             $response = Http::withHeaders([
                 'Authorization' => "Basic {$credentials}",
-            ])->post("{$this->base_url}/token?grant_type=client_credentials");
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ])->asForm()->post("{$this->base_url}/token?grant_type=client_credentials");
 
             $this->logger->info('Token Response', ['body' => $response->body()]);
 
@@ -69,7 +71,7 @@ class KCBMpesaExpress
 
             $this->logger->info('STK Response', ['status' => $response->status(), 'body' => $response->body()]);
 
-            if($respose->successful()) {
+            if($response->successful()) {
                 return $response->json();
             }
 
